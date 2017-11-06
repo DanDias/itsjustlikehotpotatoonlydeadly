@@ -24,12 +24,11 @@ ___
     * Throw Grenade (for this milestone)
   * Sprite name
   * Is health necessary? If 1 hit kill, nope
-* [ ] Turn System
+* [X] Turn System
   * Singleton
   * ChangeTurn event for when turns change
     * Grenades can hook into this to tick down
 	* Menu system can use this to display options
   * CurrentCharacter to return whos turn it is
-  * Only need 2 teams
   * Turn counter
 ___
