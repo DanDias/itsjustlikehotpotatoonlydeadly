@@ -14,6 +14,7 @@ public class TurnManager : Singleton<TurnManager>
     // Properties
     public int TurnCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
+	public GameObject chars;
 
     protected Dictionary<int, List<Character>> teams;
     protected Queue<Character> TurnOrder;
@@ -22,12 +23,20 @@ public class TurnManager : Singleton<TurnManager>
     void Start()
     {
         // TEST
+		/*
         RegisterCharacter(new Character("Good Guy 1"), 1);
         RegisterCharacter(new Character("Good Guy 2"), 1);
         RegisterCharacter(new Character("Good Guy 3"), 1);
         RegisterCharacter(new Character("Bad Guy 1"), 2);
         RegisterCharacter(new Character("Bad Guy 2"), 2);
         RegisterCharacter(new Character("Bad Guy 3"), 2);
+        */
+		RegisterCharacter(CreateCharacter("Good Guy 1", new Vector3(-4, -2, 0)), 1);
+		RegisterCharacter(CreateCharacter("Good Guy 2", new Vector3(-5, -1, 0)), 1);
+		RegisterCharacter(CreateCharacter("Good Guy 3", new Vector3(-6, 0, 0)), 1);
+		RegisterCharacter(CreateCharacter("Bad Guy 1", new Vector3(4, 1, 0)), 1);
+		RegisterCharacter(CreateCharacter("Bad Guy 2", new Vector3(5, 0, 0)), 1);
+		RegisterCharacter(CreateCharacter("Bad Guy 3", new Vector3(6, -1, 0)), 1);
         StartBattle();
         for (int i = 0; i < 12; i++)
         {
@@ -40,6 +49,15 @@ public class TurnManager : Singleton<TurnManager>
 	void Update ()
     {
 		
+	}
+
+	public Character CreateCharacter(string name, Vector3 pos)
+	{
+		var obj = Instantiate (chars, pos, Quaternion.identity);
+		obj.name = name;
+		Character c = obj.GetComponent<Character> ();
+		c.Name = name;
+		return c;
 	}
 
     /// <summary>
