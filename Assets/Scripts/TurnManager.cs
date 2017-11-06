@@ -15,6 +15,7 @@ public class TurnManager : Singleton<TurnManager>
     public int TurnCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
 	public GameObject chars;
+	public GameObject pointer;
 
     protected Dictionary<int, List<Character>> teams;
     protected Queue<Character> TurnOrder;
@@ -34,15 +35,19 @@ public class TurnManager : Singleton<TurnManager>
 		RegisterCharacter(CreateCharacter("Good Guy 1", new Vector3(-4, -2, 0)), 1);
 		RegisterCharacter(CreateCharacter("Good Guy 2", new Vector3(-5, -1, 0)), 1);
 		RegisterCharacter(CreateCharacter("Good Guy 3", new Vector3(-6, 0, 0)), 1);
-		RegisterCharacter(CreateCharacter("Bad Guy 1", new Vector3(4, 1, 0)), 1);
-		RegisterCharacter(CreateCharacter("Bad Guy 2", new Vector3(5, 0, 0)), 1);
-		RegisterCharacter(CreateCharacter("Bad Guy 3", new Vector3(6, -1, 0)), 1);
+		RegisterCharacter(CreateCharacter("Bad Guy 1", new Vector3(4, 1, 0)), 2);
+		RegisterCharacter(CreateCharacter("Bad Guy 2", new Vector3(5, 0, 0)), 2);
+		RegisterCharacter(CreateCharacter("Bad Guy 3", new Vector3(6, -1, 0)), 2);
         StartBattle();
-        for (int i = 0; i < 12; i++)
+        /*for (int i = 0; i < 12; i++)
         {
             NextTurn();
             Debug.LogFormat("Turn {0} - {1}",TurnCounter,CurrentCharacter.Name);
-        }
+			if (teams[1].Contains(CurrentCharacter))
+				Debug.LogFormat("Good guy team turn");
+			else
+				Debug.LogFormat("bad guys turn");
+        }*/
     }
 	
 	// Update is called once per frame
@@ -83,6 +88,7 @@ public class TurnManager : Singleton<TurnManager>
         {
             TurnOrder.Enqueue(c);
         }
+		NextTurn();
     }
 
     public void RegisterCharacter(Character ch, int team)
@@ -99,9 +105,16 @@ public class TurnManager : Singleton<TurnManager>
         TurnCounter++;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
+		pointer.transform.position = CurrentCharacter.GetComponentInParent<Transform>().position + new Vector3(0, 1, 0);
         // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
         ChangeTurn.Invoke();
     }
+
+	public void Attack()
+	{
+		Debug.LogFormat("{0} attacked", CurrentCharacter.Name);
+		NextTurn();
+	}
 }
