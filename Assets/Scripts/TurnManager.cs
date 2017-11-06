@@ -105,6 +105,7 @@ public class TurnManager : Singleton<TurnManager>
         TurnCounter++;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
+		// Set the pointer to the CurrentCharacter
 		pointer.transform.position = CurrentCharacter.GetComponentInParent<Transform>().position + new Vector3(0, 1, 0);
         // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
@@ -114,7 +115,13 @@ public class TurnManager : Singleton<TurnManager>
 
 	public void Attack()
 	{
-		Debug.LogFormat("{0} attacked", CurrentCharacter.Name);
+		// bad test code to set a random target
+		int t = 1;
+		if (teams[t].Contains(CurrentCharacter)) 
+			t = 2;
+		CurrentCharacter.SetTarget(teams[t][Random.Range(0,3)]);
+		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
+		CurrentCharacter.ThrowGrenade();
 		NextTurn();
 	}
 }

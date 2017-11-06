@@ -19,22 +19,23 @@ public class Character : MonoBehaviour
 
 	public void ThrowGrenade()
 	{
+		Debug.LogFormat ("Throwing grenade");
+		if (myTarget == null)
+			System.Console.WriteLine ("Select a target");
+		
 		if(myGrenade == null)
 			myGrenade = new Grenade(3);
-		else {
-			if (myTarget == null)
-				System.Console.WriteLine ("Select a target");
-			else {
-				myTarget.ReceiveGrenade (myGrenade);
-				myGrenade = null;
-			}
-		}
+
+		myTarget.ReceiveGrenade (myGrenade);
+		myGrenade = null;
 	}
 
 	public void ReceiveGrenade(Grenade thrownGrenade)
 	{
 		myGrenade = thrownGrenade;
 		myGrenade.ChangeTick(-1);
+		if(myGrenade.exploded)
+			myGrenade = null;
 	}
 
 	public void SetTarget(Character target)
