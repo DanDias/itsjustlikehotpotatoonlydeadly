@@ -11,6 +11,7 @@ public class TurnManager : Singleton<TurnManager>
     // Events
     public UnityEvent OnChangeTurn = new UnityEvent();
     public UnityEvent<Character> OnRegisterCharacter = new CharacterEvent();
+	public UnityEvent<Character> OnCharacterDeath = new CharacterEvent();
 
     // Properties
     public int TurnCounter { get; protected set; }
@@ -107,6 +108,13 @@ public class TurnManager : Singleton<TurnManager>
 		CurrentCharacter.SetTarget(teams[t][Random.Range(0,3)]);
 		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
 		CurrentCharacter.ThrowGrenade();
+		if (CurrentCharacter.myTarget.myState == "dead") 
+		{
+			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
+			if (OnCharacterDeath != null)
+				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
+		}
+			
 		NextTurn();
 	}
 }

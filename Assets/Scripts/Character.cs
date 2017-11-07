@@ -10,6 +10,7 @@ public class Character
 
     public Grenade myGrenade;
 	public Character myTarget;
+	public string myState;
 
     public Character(string name)
     {
@@ -35,8 +36,11 @@ public class Character
 	{
 		myGrenade = thrownGrenade;
 		myGrenade.ChangeTick(-1);
-		if(myGrenade.exploded)
+		if (myGrenade.exploded) 
+		{
 			myGrenade = null;
+			myState = "dead";
+		}
 	}
 
 	public void SetTarget(Character target)

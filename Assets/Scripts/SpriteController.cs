@@ -7,6 +7,8 @@ public class SpriteController : MonoBehaviour
 {
     public GameObject characterPrefab;
 
+	Animator anim;
+
     public Vector3[] positions;
 
     protected List<int> takenPositions = new List<int>();
@@ -18,6 +20,7 @@ public class SpriteController : MonoBehaviour
     {
         // Hook up to see when a new characters is registered
         TurnManager.Instance.OnRegisterCharacter.AddListener(CreateCharacter);
+		TurnManager.Instance.OnCharacterDeath.AddListener(KillCharacter);
 	}
 	
 	// Update is called once per frame
@@ -59,4 +62,11 @@ public class SpriteController : MonoBehaviour
         // Set name
         obj.name = ch.Name;
     }
+
+	public void KillCharacter(GameObject go)
+	{
+		Debug.LogFormat ("kill character {0}", go.GetComponent<Character>().Name);
+		anim = go.GetComponent<Animator> ();
+		anim.SetTrigger("Die");
+	}
 }
