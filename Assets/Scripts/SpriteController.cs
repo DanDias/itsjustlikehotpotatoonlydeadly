@@ -14,18 +14,8 @@ public class SpriteController : MonoBehaviour
     public Dictionary<Character, Vector3> CharacterToPositionMap = new Dictionary<Character, Vector3>();
 
     // Use this for initialization
-    void Start ()
+    void Awake()
     {
-        // TODO: Could probably designate these better, maybe with actual GameObjects
-        positions = new Vector3[] {
-            new Vector3(-4, -2, 0),
-            new Vector3(-5, -1, 0),
-            new Vector3(-6, 0, 0),
-            new Vector3(4, 1, 0),
-            new Vector3(5, 0, 0),
-            new Vector3(6, -1, 0)
-        };
-
         // Hook up to see when a new characters is registered
         TurnManager.Instance.OnRegisterCharacter.AddListener(CreateCharacter);
 	}
