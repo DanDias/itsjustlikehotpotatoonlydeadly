@@ -11,7 +11,7 @@ public class Grenade
     public Vector3 Position { get; protected set; }
 
     public GrenadeEvent OnChange = new GrenadeEvent();
-    public GrenadeEvent OnRemove = new GrenadeEvent();
+    //public GrenadeEvent OnRemove = new GrenadeEvent();
 
     public Grenade (int mxT)
 	{
@@ -28,8 +28,8 @@ public class Grenade
 
 	public void ChangeTick(int tick)
 	{
-        if (exploded)
-            OnRemove.Invoke(this);
+        //if (exploded)
+         //   OnRemove.Invoke(this);
 		currentTick += tick;
 		Debug.LogFormat("ticking... {0}", currentTick);
 		if(currentTick <= 0)
@@ -38,8 +38,8 @@ public class Grenade
 
 	public void Explode()
 	{
-        OnChange.Invoke(this);
 		exploded = true;
+        OnChange.Invoke(this);
 	}
 }
 

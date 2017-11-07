@@ -10,6 +10,7 @@ public class SpriteController : MonoBehaviour
     public Sprite explosionSprite;
 
 	Animator anim;
+	Grenade gToRemove;
 
     public Vector3[] positions;
 
@@ -17,6 +18,7 @@ public class SpriteController : MonoBehaviour
 
     public Dictionary<Character, GameObject> CharacterToGameObj = new Dictionary<Character, GameObject>();
     public Dictionary<Grenade, GameObject> GrenadeToGameObj = new Dictionary<Grenade, GameObject>();
+	Dictionary<Grenade, int> GrenadesToRemove = new Dictionary<Grenade, int>();
 
     // Use this for initialization
     void Awake()
@@ -28,9 +30,16 @@ public class SpriteController : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
     {
-		
+		List<Grenade> keys = GrenadesToRemove.Keys.ToList();
+		for(int i = 0; i < keys.Count; i++) 
+		{
+			GrenadesToRemove[keys[i]]++;
+			if (GrenadesToRemove[keys[i]] == 75) {
+				RemoveGrenade(keys[i]);
+			}
+		}
 	}
 
     public void CreateCharacter(Character ch)
@@ -72,7 +81,7 @@ public class SpriteController : MonoBehaviour
     {
         GameObject obj = Instantiate(grenadePrefab, Vector3.zero, Quaternion.identity);
         g.OnChange.AddListener(ChangeGrenade);
-        g.OnRemove.AddListener(RemoveGrenade);
+        //g.OnRemove.AddListener(RemoveGrenade);
         GrenadeToGameObj[g] = obj;
     }
 
@@ -83,16 +92,19 @@ public class SpriteController : MonoBehaviour
         if (g.exploded)
         {
             obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
+			obj.transform.localScale = new Vector3(.1f, .1f, 0f);
+			GrenadesToRemove[g] = 0;
         }
     }
 
     public void RemoveGrenade(Grenade g)
     {
         GameObject obj = GrenadeToGameObj[g];
-        g.OnRemove.RemoveAllListeners();
+        //g.OnRemove.RemoveAllListeners();
         g.OnChange.RemoveAllListeners();
         Destroy(obj);
         GrenadeToGameObj.Remove(g);
+		GrenadesToRemove.Remove(g);
     }
 
 	public void KillCharacter(Character ch)

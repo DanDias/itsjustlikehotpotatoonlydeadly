@@ -97,7 +97,10 @@ public class TurnManager : Singleton<TurnManager>
         TurnCounter++;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
-        // Queue them back into the turn order
+        // Remove dead characters from turn queue
+		if(CurrentCharacter.isDead)
+			CurrentCharacter = TurnOrder.Dequeue();
+		// Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
         if (OnChangeTurn != null)
@@ -110,14 +113,16 @@ public class TurnManager : Singleton<TurnManager>
 		int t = 1;
 		if (teams[t].Contains(CurrentCharacter)) 
 			t = 2;
-		CurrentCharacter.SetTarget(teams[t][Random.Range(0,3)]);
+		CurrentCharacter.SetTarget(teams[t][Random.Range(0,teams[t].Count)]);
 		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
 		CurrentCharacter.ThrowGrenade();
-		if (CurrentCharacter.myTarget.myState == "dead") 
+		if (CurrentCharacter.myTarget.isDead) 
 		{
 			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
 			if (OnCharacterDeath != null)
 				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
+			teams[t].Remove(CurrentCharacter.myTarget);
+			CurrentCharacter.SetTarget(null);
 		}
 			
 		NextTurn();

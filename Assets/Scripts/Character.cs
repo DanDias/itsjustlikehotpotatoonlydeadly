@@ -14,13 +14,14 @@ public class Character
 
     public Grenade myGrenade;
 	public Character myTarget;
-	public string myState;
+	public bool isDead;
 
     public Character(string name)
     {
         Name = name;
 		myGrenade = null;
 		myTarget = null;
+		isDead = false;
     }
 
     public void SetPosition(Vector3 pos)
@@ -35,13 +36,15 @@ public class Character
 		Debug.LogFormat ("Throwing grenade");
 		if (myTarget == null)
 			System.Console.WriteLine ("Select a target");
-		
-		if(myGrenade == null)
-			myGrenade = new Grenade(3);
+		else 
+		{
+			if (myGrenade == null)
+				myGrenade = new Grenade (3);
 
-		myTarget.ReceiveGrenade(myGrenade);
-        myGrenade.SetPosition(myTarget.Position);
-		myGrenade = null;
+			myTarget.ReceiveGrenade (myGrenade);
+			myGrenade.SetPosition (myTarget.Position);
+			myGrenade = null;
+		}
 	}
 
 	public void ReceiveGrenade(Grenade thrownGrenade)
@@ -51,7 +54,7 @@ public class Character
 		if (myGrenade.exploded) 
 		{
 			myGrenade = null;
-			myState = "dead";
+			isDead = true;
 		}
 	}
 
