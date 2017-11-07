@@ -11,6 +11,7 @@ public class TurnManager : Singleton<TurnManager>
     // Events
     public UnityEvent OnChangeTurn = new UnityEvent();
     public UnityEvent<Character> OnRegisterCharacter = new CharacterEvent();
+    public UnityEvent<Grenade> OnRegisterGrenade = new GrenadeEvent();
 
     // Properties
     public int TurnCounter { get; protected set; }
@@ -82,8 +83,12 @@ public class TurnManager : Singleton<TurnManager>
         teams[team].Add(ch);
         // TODO: Maybe just set in Character with a constructor
         ch.Team = team;
-        if (OnRegisterCharacter != null)
-            OnRegisterCharacter.Invoke(ch);
+        OnRegisterCharacter.Invoke(ch);
+    }
+
+    public void RegisterGrenade(Grenade g)
+    {
+        OnRegisterGrenade.Invoke(g);
     }
 
     public void NextTurn()

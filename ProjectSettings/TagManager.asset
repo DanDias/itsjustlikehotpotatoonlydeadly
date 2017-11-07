@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Characters
+    uniqueID: 2333324975
+    locked: 0
+  - name: Grenades
+    uniqueID: 2209123253
+    locked: 0

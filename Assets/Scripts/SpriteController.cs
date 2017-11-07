@@ -6,18 +6,22 @@ using System.Linq;
 public class SpriteController : MonoBehaviour
 {
     public GameObject characterPrefab;
+    public GameObject grenadePrefab;
+    public Sprite explosionSprite;
 
     public Vector3[] positions;
 
     protected List<int> takenPositions = new List<int>();
 
-    public Dictionary<Character, Vector3> CharacterToPositionMap = new Dictionary<Character, Vector3>();
+    public Dictionary<Character, GameObject> CharacterToGameObj = new Dictionary<Character, GameObject>();
+    public Dictionary<Grenade, GameObject> GrenadeToGameObj = new Dictionary<Grenade, GameObject>();
 
     // Use this for initialization
     void Awake()
     {
         // Hook up to see when a new characters is registered
         TurnManager.Instance.OnRegisterCharacter.AddListener(CreateCharacter);
+        TurnManager.Instance.OnRegisterGrenade.AddListener(CreateGrenade);
 	}
 	
 	// Update is called once per frame
@@ -53,10 +57,38 @@ public class SpriteController : MonoBehaviour
                 }
             }
         }
-        CharacterToPositionMap[ch] = position;
         // Create Character in scene
+        ch.SetPosition(position);
         GameObject obj = Instantiate(characterPrefab, position, Quaternion.identity);
         // Set name
         obj.name = ch.Name;
+        CharacterToGameObj[ch] = obj;
+    }
+
+    public void CreateGrenade(Grenade g)
+    {
+        GameObject obj = Instantiate(grenadePrefab, Vector3.zero, Quaternion.identity);
+        g.OnChange.AddListener(ChangeGrenade);
+        g.OnRemove.AddListener(RemoveGrenade);
+        GrenadeToGameObj[g] = obj;
+    }
+
+    public void ChangeGrenade(Grenade g)
+    {
+        GameObject obj = GrenadeToGameObj[g];
+        obj.transform.position = g.Position;
+        if (g.exploded)
+        {
+            obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
+        }
+    }
+
+    public void RemoveGrenade(Grenade g)
+    {
+        GameObject obj = GrenadeToGameObj[g];
+        g.OnRemove.RemoveAllListeners();
+        g.OnChange.RemoveAllListeners();
+        Destroy(obj);
+        GrenadeToGameObj.Remove(g);
     }
 }
