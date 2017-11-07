@@ -32,3 +32,7 @@ ___
   * CurrentCharacter to return whos turn it is
   * Turn counter
 ___
+
+Used Sprites:
+https://openclipart.org/detail/284551/boom
+https://openclipart.org/detail/172791/grenade

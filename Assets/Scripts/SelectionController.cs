@@ -8,9 +8,7 @@ public class SelectionController : MonoBehaviour {
 
     public void SelectNewCharacter()
     {
-        SpriteController sc = GetComponent<SpriteController>();
         // Set the pointer to the CurrentCharacter
-        pointerObject.transform.position = sc.CharacterToPositionMap[
-            TurnManager.Instance.CurrentCharacter] + new Vector3(0, 1, 0);
+        pointerObject.transform.position = TurnManager.Instance.CurrentCharacter.Position + new Vector3(0, 1, 0);
     }
 }

@@ -8,14 +8,28 @@ public class Grenade
 	int currentTick;
 	public bool exploded = false;
 
-	public Grenade (int mxT)
+    public Vector3 Position { get; protected set; }
+
+    public GrenadeEvent OnChange = new GrenadeEvent();
+    public GrenadeEvent OnRemove = new GrenadeEvent();
+
+    public Grenade (int mxT)
 	{
 		maxTick = mxT;
 		currentTick = maxTick;
+        TurnManager.Instance.RegisterGrenade(this);
 	}
+
+    public void SetPosition(Vector3 pos)
+    {
+        Position = pos;
+        OnChange.Invoke(this);
+    }
 
 	public void ChangeTick(int tick)
 	{
+        if (exploded)
+            OnRemove.Invoke(this);
 		currentTick += tick;
 		Debug.LogFormat("ticking... {0}", currentTick);
 		if(currentTick <= 0)
@@ -24,7 +38,7 @@ public class Grenade
 
 	public void Explode()
 	{
-		Debug.LogFormat("BOOM!");
+        OnChange.Invoke(this);
 		exploded = true;
 	}
 }

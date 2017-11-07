@@ -7,6 +7,10 @@ public class Character
     // Properties
     public string Name { get; set; }
     public int Team { get; set; }
+    public Vector3 Position { get; protected set; }
+
+    // Events
+    public CharacterEvent OnPositionChange = new CharacterEvent();
 
     public Grenade myGrenade;
 	public Character myTarget;
@@ -19,6 +23,13 @@ public class Character
 		myTarget = null;
     }
 
+    public void SetPosition(Vector3 pos)
+    {
+        Position = pos;
+        if (OnPositionChange != null)
+            OnPositionChange.Invoke(this);
+    }
+
 	public void ThrowGrenade()
 	{
 		Debug.LogFormat ("Throwing grenade");
@@ -28,7 +39,8 @@ public class Character
 		if(myGrenade == null)
 			myGrenade = new Grenade(3);
 
-		myTarget.ReceiveGrenade (myGrenade);
+		myTarget.ReceiveGrenade(myGrenade);
+        myGrenade.SetPosition(myTarget.Position);
 		myGrenade = null;
 	}
 
