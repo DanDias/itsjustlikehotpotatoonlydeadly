@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character
 {
     // Properties
     public string Name { get; set; }
+    public int Team { get; set; }
 
-	public Grenade myGrenade;
+    public Grenade myGrenade;
 	public Character myTarget;
 
     public Character(string name)

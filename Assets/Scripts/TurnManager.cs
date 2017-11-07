@@ -9,13 +9,12 @@ public class TurnManager : Singleton<TurnManager>
     protected TurnManager() { } // Guarantee it'll be a singleton only
 
     // Events
-    public UnityEvent ChangeTurn;
+    public UnityEvent OnChangeTurn = new UnityEvent();
+    public UnityEvent<Character> OnRegisterCharacter = new CharacterEvent();
 
     // Properties
     public int TurnCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
-	public GameObject chars;
-	public GameObject pointer;
 
     protected Dictionary<int, List<Character>> teams;
     protected Queue<Character> TurnOrder;
@@ -24,20 +23,12 @@ public class TurnManager : Singleton<TurnManager>
     void Start()
     {
         // TEST
-		/*
-        RegisterCharacter(new Character("Good Guy 1"), 1);
-        RegisterCharacter(new Character("Good Guy 2"), 1);
-        RegisterCharacter(new Character("Good Guy 3"), 1);
-        RegisterCharacter(new Character("Bad Guy 1"), 2);
-        RegisterCharacter(new Character("Bad Guy 2"), 2);
-        RegisterCharacter(new Character("Bad Guy 3"), 2);
-        */
-		RegisterCharacter(CreateCharacter("Good Guy 1", new Vector3(-4, -2, 0)), 1);
-		RegisterCharacter(CreateCharacter("Good Guy 2", new Vector3(-5, -1, 0)), 1);
-		RegisterCharacter(CreateCharacter("Good Guy 3", new Vector3(-6, 0, 0)), 1);
-		RegisterCharacter(CreateCharacter("Bad Guy 1", new Vector3(4, 1, 0)), 2);
-		RegisterCharacter(CreateCharacter("Bad Guy 2", new Vector3(5, 0, 0)), 2);
-		RegisterCharacter(CreateCharacter("Bad Guy 3", new Vector3(6, -1, 0)), 2);
+		RegisterCharacter(new Character("Good Guy 1"), 1);
+		RegisterCharacter(new Character("Good Guy 2"), 1);
+		RegisterCharacter(new Character("Good Guy 3"), 1);
+		RegisterCharacter(new Character("Bad Guy 1"), 2);
+		RegisterCharacter(new Character("Bad Guy 2"), 2);
+		RegisterCharacter(new Character("Bad Guy 3"), 2);
         StartBattle();
         /*for (int i = 0; i < 12; i++)
         {
@@ -54,15 +45,6 @@ public class TurnManager : Singleton<TurnManager>
 	void Update ()
     {
 		
-	}
-
-	public Character CreateCharacter(string name, Vector3 pos)
-	{
-		var obj = Instantiate (chars, pos, Quaternion.identity);
-		obj.name = name;
-		Character c = obj.GetComponent<Character> ();
-		c.Name = name;
-		return c;
 	}
 
     /// <summary>
@@ -98,6 +80,10 @@ public class TurnManager : Singleton<TurnManager>
         if (!teams.ContainsKey(team))
             teams[team] = new List<Character>();
         teams[team].Add(ch);
+        // TODO: Maybe just set in Character with a constructor
+        ch.Team = team;
+        if (OnRegisterCharacter != null)
+            OnRegisterCharacter.Invoke(ch);
     }
 
     public void NextTurn()
@@ -105,12 +91,11 @@ public class TurnManager : Singleton<TurnManager>
         TurnCounter++;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
-		// Set the pointer to the CurrentCharacter
-		pointer.transform.position = CurrentCharacter.GetComponentInParent<Transform>().position + new Vector3(0, 1, 0);
         // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
-        ChangeTurn.Invoke();
+        if (OnChangeTurn != null)
+            OnChangeTurn.Invoke();
     }
 
 	public void Attack()
