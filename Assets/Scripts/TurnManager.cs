@@ -98,8 +98,10 @@ public class TurnManager : Singleton<TurnManager>
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
         // Remove dead characters from turn queue
-		if(CurrentCharacter.isDead)
+		while(CurrentCharacter.isDead)
+		{
 			CurrentCharacter = TurnOrder.Dequeue();
+		}
 		// Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
