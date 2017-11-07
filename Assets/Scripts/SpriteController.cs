@@ -95,10 +95,10 @@ public class SpriteController : MonoBehaviour
         GrenadeToGameObj.Remove(g);
     }
 
-	public void KillCharacter(GameObject go)
+	public void KillCharacter(Character ch)
 	{
-		Debug.LogFormat ("kill character {0}", go.GetComponent<Character>().Name);
-		anim = go.GetComponent<Animator> ();
+		Debug.LogFormat ("kill character {0}", ch.Name);
+		anim = CharacterToGameObj[ch].GetComponent<Animator> ();
 		anim.SetTrigger("Die");
 	}
 }
