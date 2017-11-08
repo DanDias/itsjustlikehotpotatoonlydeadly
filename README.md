@@ -54,3 +54,6 @@ Used Sprites:
 http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator/#?jacket=none&armor=chest_leather&mail=chain&legs=robe_skirt&hair=bedhead_white
 https://openclipart.org/detail/284551/boom
 https://openclipart.org/detail/172791/grenade
+
+Used Libraries:
+https://github.com/prime31/GoKit
