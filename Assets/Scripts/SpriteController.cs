@@ -120,6 +120,7 @@ public class SpriteController : MonoBehaviour
             GoTween gt = Go.to(obj.transform, 1f, new GoTweenConfig().positionPath(path, false));
             gt.setOnCompleteHandler(t =>
             {
+				gAnim = obj.GetComponent<Animator>();
 				gAnim.SetTrigger("isStopped");
                 if (g.exploded)
                 {

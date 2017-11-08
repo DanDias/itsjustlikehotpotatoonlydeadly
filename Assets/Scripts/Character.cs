@@ -12,14 +12,14 @@ public class Character
     // Events
     public CharacterEvent OnPositionChange = new CharacterEvent();
 
-    public Grenade myGrenade;
+    public List<Grenade> myGrenades;
 	public Character myTarget;
 	public bool isDead;
 
     public Character(string name)
     {
         Name = name;
-		myGrenade = null;
+		myGrenades = new List<Grenade>();
 		myTarget = null;
 		isDead = false;
     }
@@ -38,22 +38,37 @@ public class Character
 			System.Console.WriteLine ("Select a target");
 		else 
 		{
-			if (myGrenade == null)
-				myGrenade = new Grenade (3);
+			if (myGrenades.Count == 0)
+				myGrenades.Add(new Grenade(3));
 
-			myTarget.ReceiveGrenade (myGrenade);
-			myGrenade.SetPosition (myTarget.Position);
-			myGrenade = null;
+			myTarget.ReceiveGrenade (myGrenades[0]);
+			//myGrenades[0].SetPosition (myTarget.Position);
+			myGrenades.Remove(myGrenades[0]);
+			foreach(Grenade g in myGrenades)
+			{
+				int leftOrRight = 1;
+				if(Team == 2)
+					leftOrRight = -1;
+				g.SetPosition(g.Position + new Vector3(leftOrRight, 0, 0));
+			}
 		}
 	}
 
 	public void ReceiveGrenade(Grenade thrownGrenade)
 	{
-		myGrenade = thrownGrenade;
-		myGrenade.ChangeTick(-1);
-		if (myGrenade.exploded) 
+		int leftOrRight = -1;
+		if(Team == 2)
+			leftOrRight = 1;
+		thrownGrenade.ChangeTick(-1);
+		thrownGrenade.SetPosition(Position + new Vector3(leftOrRight * myGrenades.Count, 0, 0));
+		myGrenades.Add(thrownGrenade);
+		if (thrownGrenade.exploded) 
 		{
-			myGrenade = null;
+			foreach(Grenade g in myGrenades)
+			{
+				g.Explode();
+				g.SetPosition(g.Position);
+			}
 			isDead = true;
 		}
 	}
