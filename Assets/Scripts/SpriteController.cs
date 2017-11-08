@@ -9,7 +9,11 @@ public class SpriteController : MonoBehaviour
     public GameObject grenadePrefab;
     public Sprite explosionSprite;
 
-	Animator anim;
+	int gExplodeTime = 75;
+	int cDeathTime = 75;
+
+	Animator cAnim;
+	Animator gAnim;
 	Grenade gToRemove;
     Vector3 grenadeArmOffset = new Vector3(0.35f, -0.45f, 0);
 
@@ -20,6 +24,7 @@ public class SpriteController : MonoBehaviour
     public Dictionary<Character, GameObject> CharacterToGameObj = new Dictionary<Character, GameObject>();
     public Dictionary<Grenade, GameObject> GrenadeToGameObj = new Dictionary<Grenade, GameObject>();
 	Dictionary<Grenade, int> GrenadesToRemove = new Dictionary<Grenade, int>();
+	Dictionary<Character, int> CharactersToDie = new Dictionary<Character, int>();
 
     // Use this for initialization
     void Awake()
@@ -33,12 +38,21 @@ public class SpriteController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        List <Grenade> keys = GrenadesToRemove.Keys.ToList();
-		for(int i = 0; i < keys.Count; i++) 
+        List<Grenade> gKeys = GrenadesToRemove.Keys.ToList();
+		for(int i = 0; i < gKeys.Count; i++) 
 		{
-			GrenadesToRemove[keys[i]]++;
-			if (GrenadesToRemove[keys[i]] == 75) {
-				RemoveGrenade(keys[i]);
+			GrenadesToRemove[gKeys[i]]++;
+			if (GrenadesToRemove[gKeys[i]] == gExplodeTime) {
+				RemoveGrenade(gKeys[i]);
+			}
+		}
+
+		List<Character> cKeys = CharactersToDie.Keys.ToList();
+		for(int i = 0; i < cKeys.Count(); i++)
+		{
+			CharactersToDie[cKeys[i]]++;
+			if (CharactersToDie[cKeys[i]] == cDeathTime) {
+				PlayDeathAnimation(cKeys[i]);
 			}
 		}
     }
@@ -101,11 +115,16 @@ public class SpriteController : MonoBehaviour
                 end
             };
             var path = new GoSpline(points);
+			gAnim = obj.GetComponent<Animator>();
+			gAnim.SetTrigger("isMoving");
             GoTween gt = Go.to(obj.transform, 1f, new GoTweenConfig().positionPath(path, false));
             gt.setOnCompleteHandler(t =>
             {
+				gAnim.SetTrigger("isStopped");
                 if (g.exploded)
                 {
+					//obj.GetComponent<Animator>().enabled = false;
+					gAnim.enabled = false;
                     obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
                     obj.transform.localScale = new Vector3(.1f, .1f, 0f);
                     GrenadesToRemove[g] = 0;
@@ -128,7 +147,13 @@ public class SpriteController : MonoBehaviour
 	public void KillCharacter(Character ch)
 	{
 		Debug.LogFormat ("kill character {0}", ch.Name);
-		anim = CharacterToGameObj[ch].GetComponent<Animator> ();
-		anim.SetTrigger("Die");
+		CharactersToDie[ch] = 0;
+	}
+
+	void PlayDeathAnimation(Character ch)
+	{
+		CharactersToDie.Remove(ch);
+		cAnim = CharacterToGameObj[ch].GetComponent<Animator>();
+		cAnim.SetTrigger("Die");
 	}
 }
