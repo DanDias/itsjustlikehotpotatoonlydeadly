@@ -14,7 +14,7 @@ ___
 ## Second Milestone: Clean up a bit
 * [X] Dead people shouldn't throw grenades
 * [X] Don't target dead people... I mean come on. They aren't going to get more dead.
-* [ ] Grenade blocks the person. Probably should appear in their hand and smaller instead of over them.
+* [X] Grenade blocks the person. Probably should appear in their hand and smaller instead of over them.
 * [X] Remove expended grenades after you can see the BOOM!
 ___
 ## Third Milestone: Multiple options

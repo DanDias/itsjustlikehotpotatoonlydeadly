@@ -88,7 +88,11 @@ public class SpriteController : MonoBehaviour
     public void ChangeGrenade(Grenade g)
     {
         GameObject obj = GrenadeToGameObj[g];
-        obj.transform.position = g.Position;
+        // If the grenade has switched positions, move it to their hand
+        if (Vector3.Distance(obj.transform.position, g.Position) > 0)
+        {
+            obj.transform.position = g.Position + new Vector3(0.35f,-0.45f,0);
+        }
         if (g.exploded)
         {
             obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
