@@ -5,7 +5,7 @@ using UnityEngine;
 public class Grenade
 {
 	int maxTick;
-	int currentTick;
+	public int CurrentTick { get; protected set;}
 	public bool exploded = false;
 
     public Vector3 Position { get; protected set; }
@@ -16,7 +16,7 @@ public class Grenade
     public Grenade (int mxT)
 	{
 		maxTick = mxT;
-		currentTick = maxTick;
+		CurrentTick = maxTick;
         TurnManager.Instance.RegisterGrenade(this);
 	}
 
@@ -30,9 +30,9 @@ public class Grenade
 	{
         //if (exploded)
          //   OnRemove.Invoke(this);
-		currentTick += tick;
-		Debug.LogFormat("ticking... {0}", currentTick);
-		if(currentTick <= 0)
+		CurrentTick += tick;
+		Debug.LogFormat("ticking... {0}", CurrentTick);
+		if(CurrentTick <= 0)
 			Explode();
 	}
 

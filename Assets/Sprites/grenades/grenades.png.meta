@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: bf690754dc0de4735a9e3abfee8a7e74
-timeCreated: 1510101361
+timeCreated: 1510180366
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,10 @@ TextureImporter:
     21300010: grenades_5
     21300012: grenades_6
     21300014: grenades_7
+    21300016: grenades_8
+    21300018: grenades_9
+    21300020: grenades_10
+    21300022: grenades_11
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -90,7 +94,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -104,7 +108,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 70
-        y: 160
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -118,7 +122,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 140
-        y: 160
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -131,8 +135,8 @@ TextureImporter:
       name: grenades_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 80
+        x: 210
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -145,8 +149,8 @@ TextureImporter:
       name: grenades_4
       rect:
         serializedVersion: 2
-        x: 70
-        y: 80
+        x: 280
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -159,8 +163,8 @@ TextureImporter:
       name: grenades_5
       rect:
         serializedVersion: 2
-        x: 140
-        y: 80
+        x: 350
+        y: 0
         width: 70
         height: 80
       alignment: 0
@@ -173,7 +177,7 @@ TextureImporter:
       name: grenades_6
       rect:
         serializedVersion: 2
-        x: 0
+        x: 420
         y: 0
         width: 70
         height: 80
@@ -187,7 +191,63 @@ TextureImporter:
       name: grenades_7
       rect:
         serializedVersion: 2
-        x: 70
+        x: 490
+        y: 0
+        width: 70
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: grenades_8
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 0
+        width: 70
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: grenades_9
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 0
+        width: 70
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: grenades_10
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 0
+        width: 70
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: grenades_11
+      rect:
+        serializedVersion: 2
+        x: 770
         y: 0
         width: 70
         height: 80

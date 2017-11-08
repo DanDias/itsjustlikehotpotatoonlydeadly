@@ -121,7 +121,11 @@ public class SpriteController : MonoBehaviour
             gt.setOnCompleteHandler(t =>
             {
 				gAnim = obj.GetComponent<Animator>();
-				gAnim.SetTrigger("isStopped");
+				if(g.CurrentTick == 1)
+					gAnim.SetTrigger("isShaking");
+				else
+					gAnim.SetTrigger("isStopped");
+				
                 if (g.exploded)
                 {
 					//obj.GetComponent<Animator>().enabled = false;
