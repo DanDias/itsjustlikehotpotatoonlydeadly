@@ -16,12 +16,17 @@ public class Character
 	public Character myTarget;
 	public bool isDead;
 
-    public Character(string name)
+	int leftOrRight = -1;
+
+	public Character(string name, int t)
     {
         Name = name;
 		myGrenades = new List<Grenade>();
 		myTarget = null;
 		isDead = false;
+		Team = t;
+		if(Team == 2)
+			leftOrRight = 1;
     }
 
     public void SetPosition(Vector3 pos)
@@ -46,19 +51,13 @@ public class Character
 			myGrenades.Remove(myGrenades[0]);
 			foreach(Grenade g in myGrenades)
 			{
-				int leftOrRight = 1;
-				if(Team == 2)
-					leftOrRight = -1;
-				g.SetPosition(g.Position + new Vector3(leftOrRight, 0, 0));
+				g.SetPosition(g.Position + new Vector3(-leftOrRight, 0, 0));
 			}
 		}
 	}
 
 	public void ReceiveGrenade(Grenade thrownGrenade)
 	{
-		int leftOrRight = -1;
-		if(Team == 2)
-			leftOrRight = 1;
 		thrownGrenade.ChangeTick(-1);
 		thrownGrenade.SetPosition(Position + new Vector3(leftOrRight * myGrenades.Count, 0, 0));
 		myGrenades.Add(thrownGrenade);

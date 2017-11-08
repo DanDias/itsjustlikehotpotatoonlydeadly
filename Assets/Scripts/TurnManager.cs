@@ -25,12 +25,12 @@ public class TurnManager : Singleton<TurnManager>
     void Start()
     {
         // TEST
-		RegisterCharacter(new Character("Good Guy 1"), 1);
-		RegisterCharacter(new Character("Good Guy 2"), 1);
-		RegisterCharacter(new Character("Good Guy 3"), 1);
-		RegisterCharacter(new Character("Bad Guy 1"), 2);
-		RegisterCharacter(new Character("Bad Guy 2"), 2);
-		RegisterCharacter(new Character("Bad Guy 3"), 2);
+		RegisterCharacter(new Character("Good Guy 1", 1));
+		RegisterCharacter(new Character("Good Guy 2", 1));
+		RegisterCharacter(new Character("Good Guy 3", 1));
+		RegisterCharacter(new Character("Bad Guy 1", 2));
+		RegisterCharacter(new Character("Bad Guy 2", 2));
+		RegisterCharacter(new Character("Bad Guy 3", 2));
         StartBattle();
         /*for (int i = 0; i < 12; i++)
         {
@@ -75,15 +75,13 @@ public class TurnManager : Singleton<TurnManager>
 		NextTurn();
     }
 
-    public void RegisterCharacter(Character ch, int team)
+    public void RegisterCharacter(Character ch)
     {
         if (teams == null)
             teams = new Dictionary<int, List<Character>>();
-        if (!teams.ContainsKey(team))
-            teams[team] = new List<Character>();
-        teams[team].Add(ch);
-        // TODO: Maybe just set in Character with a constructor
-        ch.Team = team;
+		if (!teams.ContainsKey(ch.Team))
+			teams[ch.Team] = new List<Character>();
+		teams[ch.Team].Add(ch);
         OnRegisterCharacter.Invoke(ch);
     }
 
