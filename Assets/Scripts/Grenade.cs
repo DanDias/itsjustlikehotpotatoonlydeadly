@@ -39,7 +39,6 @@ public class Grenade
 	public void Explode()
 	{
 		exploded = true;
-        OnChange.Invoke(this);
 	}
 }
 

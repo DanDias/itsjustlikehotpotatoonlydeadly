@@ -11,6 +11,7 @@ public class SpriteController : MonoBehaviour
 
 	Animator anim;
 	Grenade gToRemove;
+    Vector3 grenadeArmOffset = new Vector3(0.35f, -0.45f, 0);
 
     public Vector3[] positions;
 
@@ -32,7 +33,7 @@ public class SpriteController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		List<Grenade> keys = GrenadesToRemove.Keys.ToList();
+        List <Grenade> keys = GrenadesToRemove.Keys.ToList();
 		for(int i = 0; i < keys.Count; i++) 
 		{
 			GrenadesToRemove[keys[i]]++;
@@ -40,7 +41,7 @@ public class SpriteController : MonoBehaviour
 				RemoveGrenade(keys[i]);
 			}
 		}
-	}
+    }
 
     public void CreateCharacter(Character ch)
     {
@@ -79,7 +80,7 @@ public class SpriteController : MonoBehaviour
 
     public void CreateGrenade(Grenade g)
     {
-        GameObject obj = Instantiate(grenadePrefab, Vector3.zero, Quaternion.identity);
+        GameObject obj = Instantiate(grenadePrefab, TurnManager.Instance.CurrentCharacter.Position + grenadeArmOffset, Quaternion.identity);
         g.OnChange.AddListener(ChangeGrenade);
         //g.OnRemove.AddListener(RemoveGrenade);
         GrenadeToGameObj[g] = obj;
@@ -91,13 +92,26 @@ public class SpriteController : MonoBehaviour
         // If the grenade has switched positions, move it to their hand
         if (Vector3.Distance(obj.transform.position, g.Position) > 0)
         {
-            obj.transform.position = g.Position + new Vector3(0.35f,-0.45f,0);
-        }
-        if (g.exploded)
-        {
-            obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
-			obj.transform.localScale = new Vector3(.1f, .1f, 0f);
-			GrenadesToRemove[g] = 0;
+            // Do curve
+            Vector3 start = obj.transform.position;
+            Vector3 end = g.Position + grenadeArmOffset;
+            var points = new Vector3[] {
+                start,
+                new Vector3(start.x+(end.x-start.x)/2,(end.y-start.y)+3,start.z),
+                end
+            };
+            var path = new GoSpline(points);
+            GoTween gt = Go.to(obj.transform, 1f, new GoTweenConfig().positionPath(path, false));
+            gt.setOnCompleteHandler(t =>
+            {
+                if (g.exploded)
+                {
+                    obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
+                    obj.transform.localScale = new Vector3(.1f, .1f, 0f);
+                    GrenadesToRemove[g] = 0;
+                }
+            });
+
         }
     }
 
