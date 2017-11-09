@@ -10,6 +10,8 @@ public class TurnManager : Singleton<TurnManager>
 
     // Events
     public UnityEvent OnChangeTurn = new UnityEvent();
+	public UnityEvent OnEnemySelect = new UnityEvent();
+
     public UnityEvent<Character> OnRegisterCharacter = new CharacterEvent();
 	public UnityEvent<Character> OnCharacterDeath = new CharacterEvent();
     public UnityEvent<Grenade> OnRegisterGrenade = new GrenadeEvent();
@@ -114,6 +116,9 @@ public class TurnManager : Singleton<TurnManager>
 		if (teams[t].Contains(CurrentCharacter)) 
 			t = 2;
 		CurrentCharacter.SetTarget(teams[t][Random.Range(0,teams[t].Count)]);
+		if (OnEnemySelect != null)
+			OnEnemySelect.Invoke();
+		
 		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
 		CurrentCharacter.ThrowGrenade();
 		if (CurrentCharacter.myTarget.isDead) 
