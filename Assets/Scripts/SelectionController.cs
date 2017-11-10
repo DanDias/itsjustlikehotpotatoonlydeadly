@@ -16,6 +16,7 @@ public class SelectionController : MonoBehaviour {
 
 	public void SelectNewEnemy()
 	{
+        enemySelectObject.SetActive(true);
 		// Set enemy selector to current target
 		enemySelectObject.transform.position = TurnManager.Instance.CurrentCharacter.myTarget.Position + new Vector3(0, -0.9f, 0);
 	}
