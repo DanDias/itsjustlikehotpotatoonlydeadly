@@ -9,12 +9,11 @@ public class TurnManager : Singleton<TurnManager>
     protected TurnManager() { } // Guarantee it'll be a singleton only
 
     // Events
-    public UnityEvent OnChangeTurn = new UnityEvent();
-	public UnityEvent OnEnemySelect = new UnityEvent();
-
-    public UnityEvent<Character> OnRegisterCharacter = new CharacterEvent();
-	public UnityEvent<Character> OnCharacterDeath = new CharacterEvent();
-    public UnityEvent<Grenade> OnRegisterGrenade = new GrenadeEvent();
+    public CharacterEvent OnRegisterCharacter = new CharacterEvent();
+	public CharacterEvent OnCharacterDeath = new CharacterEvent();
+    public GrenadeEvent OnRegisterGrenade = new GrenadeEvent();
+    public CharacterEvent OnChangeTurn = new CharacterEvent();
+    public CharacterEvent OnEnemySelect = new CharacterEvent();
 
     // Properties
     public int TurnCounter { get; protected set; }
@@ -106,7 +105,7 @@ public class TurnManager : Singleton<TurnManager>
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
         if (OnChangeTurn != null)
-            OnChangeTurn.Invoke();
+            OnChangeTurn.Invoke(CurrentCharacter);
     }
 
 	public void Attack()
@@ -117,7 +116,7 @@ public class TurnManager : Singleton<TurnManager>
 			t = 2;
 		CurrentCharacter.SetTarget(teams[t][Random.Range(0,teams[t].Count)]);
 		if (OnEnemySelect != null)
-			OnEnemySelect.Invoke();
+			OnEnemySelect.Invoke(CurrentCharacter.myTarget);
 		
 		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
 		CurrentCharacter.ThrowGrenade();

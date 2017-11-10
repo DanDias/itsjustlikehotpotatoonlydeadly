@@ -11,31 +11,25 @@ ___
 ## Milestones
 [X] check off when done
 ___
-## Second Milestone: Clean up a bit
-* [X] Dead people shouldn't throw grenades
-* [X] Don't target dead people... I mean come on. They aren't going to get more dead.
-* [X] Grenade blocks the person. Probably should appear in their hand and smaller instead of over them.
-* [X] Remove expended grenades after you can see the BOOM!
-___
 ## Third Milestone: Multiple options
-* [ ] Menu system for attacking: throw and grenade types
+* [X] Menu system for attacking: throw and grenade types
   * Take a List of IMenuItem (interface to be attached to throw, skill or grenade types?)
   * Menu has a selected index (wrap between 0-List.Count?)
-  * Select event to message to UI a selection has been made
-  * ChangeSelection event to message to UI what is selected
-* [ ] Default list of IMenuItem to display options
+* [X] Default list of IMenuItem to display options
   * Basic Throw
   * Skills
+* [ ] Add a basic skill or two
+  * Override Skill's Execute? What's the interface to the data layer?
+  * Should Execute get two Characters, Character and Grenade, or just Character?
 ___
 ## Unsorted Ideas
-* Some kind of timer, maybe not numbers... like the idea of not knowing when it'll explode
 * Juggling skill, maybe hold more than one grenade. Maybe create an additional grenade when you already have one?
 * Grenademancy, revive a dead grenade? I don't know but I like the name
 * Change to round based timer ticks
 * Knockdown
 ___
 ## Completed Milestones
-## First Milestone: Two guys throwing grenades with timers (Completed)
+## First Milestone: Two guys throwing grenades with timers
 * [X] Grenade class
   * Has a timer which can be modified by skills
   * Timer tick when thrown
@@ -49,6 +43,13 @@ ___
 	* Menu system can use this to display options
   * CurrentCharacter to return whos turn it is
   * Turn counter
+## Second Milestone: Clean up a bit
+* [X] Dead people shouldn't throw grenades
+* [X] Don't target dead people... I mean come on. They aren't going to get more dead.
+* [X] Grenade blocks the person. Probably should appear in their hand and smaller instead of over them.
+* [X] Remove expended grenades after you can see the BOOM!
+* [X] Some kind of timer, maybe not numbers... like the idea of not knowing when it'll explode
+
 ___
 Used Sprites:
 http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator/#?jacket=none&armor=chest_leather&mail=chain&legs=robe_skirt&hair=bedhead_white

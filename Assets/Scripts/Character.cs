@@ -8,6 +8,8 @@ public class Character
     public string Name { get; set; }
     public int Team { get; set; }
     public Vector3 Position { get; protected set; }
+    // TODO: Probably should be a Skill class that does a bit more than just display a name.
+    public List<Skill> Skills { get; protected set; }
 
     // Events
     public CharacterEvent OnPositionChange = new CharacterEvent();
@@ -15,6 +17,7 @@ public class Character
     public List<Grenade> myGrenades;
 	public Character myTarget;
 	public bool isDead;
+
 
 	int leftOrRight = -1;
 
@@ -27,6 +30,12 @@ public class Character
 		Team = t;
 		if(Team == 2)
 			leftOrRight = 1;
+        Skills = new List<Skill>();
+        // TODO: Load skills from text file or something
+        Skills.Add(new Skill("Hurl Grenade"));
+        Skills.Add(new Skill("Lob Grenade"));
+        Skills.Add(new Skill("Throw Grenade"));
+        Skills.Add(new Skill("Do something cool"));
     }
 
     public void SetPosition(Vector3 pos)
