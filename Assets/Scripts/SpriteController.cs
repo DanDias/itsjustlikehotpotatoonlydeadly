@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SpriteController : MonoBehaviour
 {
-    public GameObject characterPrefab;
+    public List<GameObject> characterPrefabs;
     public GameObject grenadePrefab;
     public Sprite explosionSprite;
 
@@ -86,7 +86,7 @@ public class SpriteController : MonoBehaviour
         }
         // Create Character in scene
         ch.SetPosition(position);
-        GameObject obj = Instantiate(characterPrefab, position, Quaternion.identity);
+		GameObject obj = Instantiate(characterPrefabs[Random.Range(0,characterPrefabs.Count)], position, Quaternion.identity);
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;
