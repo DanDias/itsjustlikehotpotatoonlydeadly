@@ -868,6 +868,7 @@ GameObject:
   - component: {fileID: 2119996943}
   - component: {fileID: 2119996942}
   - component: {fileID: 2119996945}
+  - component: {fileID: 2119996946}
   - component: {fileID: 2119996944}
   m_Layer: 0
   m_Name: Managers
@@ -937,3 +938,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointerObject: {fileID: 1868027740}
   enemySelectObject: {fileID: 226345680}
+--- !u!114 &2119996946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2119996941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9cd55d1258446f3b991f90e9c92a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charName: {fileID: 1339639080}
+  charImage: {fileID: 1671272280}

@@ -18,6 +18,8 @@ public class Character
 	public Character myTarget;
 	public bool isDead;
 
+	public string staticSprite;
+
 
 	int leftOrRight = -1;
 

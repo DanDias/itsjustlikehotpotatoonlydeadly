@@ -86,7 +86,10 @@ public class SpriteController : MonoBehaviour
         }
         // Create Character in scene
         ch.SetPosition(position);
-		GameObject obj = Instantiate(characterPrefabs[Random.Range(0,characterPrefabs.Count)], position, Quaternion.identity);
+		int prefabSpot = Random.Range(0,characterPrefabs.Count);
+		GameObject obj = Instantiate(characterPrefabs[prefabSpot], position, Quaternion.identity);
+		ch.staticSprite = obj.name.Replace("(Clone)", "");
+		Debug.LogFormat ("static sprite {0}", ch.staticSprite);
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;
