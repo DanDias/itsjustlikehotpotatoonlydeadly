@@ -103,12 +103,29 @@ public class TurnManager : Singleton<TurnManager>
 		}
 		// Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
+		SelectTarget();
         // Tell everyone it's the next turn
         if (OnChangeTurn != null)
             OnChangeTurn.Invoke(CurrentCharacter);
     }
 
 	public void Attack()
+	{
+		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
+		CurrentCharacter.ThrowGrenade();
+		if (CurrentCharacter.myTarget.isDead) 
+		{
+			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
+			if (OnCharacterDeath != null)
+				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
+			teams[CurrentCharacter.myTarget.Team].Remove(CurrentCharacter.myTarget);
+			CurrentCharacter.SetTarget(null);
+		}
+			
+		NextTurn();
+	}
+
+	public void SelectTarget()
 	{
 		// bad test code to set a random target
 		int t = 1;
@@ -117,18 +134,5 @@ public class TurnManager : Singleton<TurnManager>
 		CurrentCharacter.SetTarget(teams[t][Random.Range(0,teams[t].Count)]);
 		if (OnEnemySelect != null)
 			OnEnemySelect.Invoke(CurrentCharacter.myTarget);
-		
-		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
-		CurrentCharacter.ThrowGrenade();
-		if (CurrentCharacter.myTarget.isDead) 
-		{
-			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
-			if (OnCharacterDeath != null)
-				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
-			teams[t].Remove(CurrentCharacter.myTarget);
-			CurrentCharacter.SetTarget(null);
-		}
-			
-		NextTurn();
 	}
 }

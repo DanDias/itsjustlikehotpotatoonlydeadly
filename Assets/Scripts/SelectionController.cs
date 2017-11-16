@@ -7,7 +7,7 @@ public class SelectionController : MonoBehaviour
     public GameObject pointerObject;
 	public GameObject enemySelectObject;
 
-    public void Start()
+    public void Awake()
     {
         TurnManager.Instance.OnChangeTurn.AddListener(SelectNewCharacter);
         TurnManager.Instance.OnEnemySelect.AddListener(SelectNewEnemy);
