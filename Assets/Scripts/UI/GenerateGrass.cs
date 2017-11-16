@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GenerateGrass : MonoBehaviour
 {
 	public GameObject grass;
+	public GameObject dirt;
 
 	public void Awake()
 	{
@@ -15,7 +16,10 @@ public class GenerateGrass : MonoBehaviour
 		{
 			for(int j = -sizeY; j <= sizeY; j++)
 			{
-				Instantiate(grass, new Vector3(i, j, 0), Quaternion.identity);
+				if (Random.Range(0,100) < 95)
+					Instantiate(grass, new Vector3(i, j, 0), Quaternion.identity);
+				else
+					Instantiate(dirt, new Vector3(i, j, 0), Quaternion.identity);
 			}
 		}
 	}

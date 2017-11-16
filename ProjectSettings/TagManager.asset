@@ -43,6 +43,9 @@ TagManager:
   - name: Ground
     uniqueID: 2270814641
     locked: 0
+  - name: Shrubs
+    uniqueID: 3581437747
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
