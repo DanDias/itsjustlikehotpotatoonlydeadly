@@ -119,6 +119,14 @@ public class TurnManager : Singleton<TurnManager>
 			if (OnCharacterDeath != null)
 				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
 			teams[CurrentCharacter.myTarget.Team].Remove(CurrentCharacter.myTarget);
+			if(teams[1].Count == 0)
+			{
+				// you lose
+			}
+			else if (teams[2].Count == 0)
+			{
+				// you win
+			}
 			CurrentCharacter.SetTarget(null);
 		}
 			
