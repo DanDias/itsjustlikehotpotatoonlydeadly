@@ -89,6 +89,7 @@ public class SpriteController : MonoBehaviour
 		int prefabSpot = Random.Range(0,characterPrefabs.Count);
 		GameObject obj = Instantiate(characterPrefabs[prefabSpot], position, Quaternion.identity);
 		ch.staticSprite = obj.name.Replace("(Clone)", "");
+        obj.GetComponent<CharacterSelection>().Me = ch;
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;

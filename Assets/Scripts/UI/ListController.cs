@@ -27,6 +27,7 @@ public class ListController : MonoBehaviour
         for(int i=0;i< skills.Count;i++)
         {
             GameObject obj = null;
+            Skill skill = skills[i];
             if (i + 1 > ContentPanel.transform.childCount)
             {
                 obj = Instantiate(ListItemPrefab);
@@ -37,8 +38,14 @@ public class ListController : MonoBehaviour
                 obj = ContentPanel.transform.GetChild(i).gameObject;
             }
             obj.GetComponent<Button>().onClick.RemoveAllListeners();
-            obj.GetComponent<Button>().onClick.AddListener(skills[i].Execute);
-            obj.GetComponentInChildren<Text>().text = skills[i].Name;
+            obj.GetComponent<Button>().onClick.AddListener(()=>
+            {
+                if (TurnManager.Instance.CurrentMode == SelectMode.Skill)
+                {
+                    TurnManager.Instance.SetCurrentSkill(skill);
+                }
+            });
+            obj.GetComponentInChildren<Text>().text = skill.Name;
             obj.SetActive(true);
         }
         if (skills.Count < ContentPanel.transform.childCount)
