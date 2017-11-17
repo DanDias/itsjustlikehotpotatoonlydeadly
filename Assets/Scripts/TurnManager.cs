@@ -14,13 +14,17 @@ public class TurnManager : Singleton<TurnManager>
     public GrenadeEvent OnRegisterGrenade = new GrenadeEvent();
     public CharacterEvent OnChangeTurn = new CharacterEvent();
     public CharacterEvent OnEnemySelect = new CharacterEvent();
+    public SelectModeEvent OnSelectModeChange = new SelectModeEvent();
 
     // Properties
     public int TurnCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
+    public Skill CurrentSkill { get; protected set; }
 
     protected Dictionary<int, List<Character>> teams;
     protected Queue<Character> TurnOrder;
+
+    public SelectMode CurrentMode { get; protected set; }
 
     // Use this for initialization
     void Start()
@@ -33,15 +37,6 @@ public class TurnManager : Singleton<TurnManager>
 		RegisterCharacter(new Character("Bad Guy 2", 2));
 		RegisterCharacter(new Character("Bad Guy 3", 2));
         StartBattle();
-        /*for (int i = 0; i < 12; i++)
-        {
-            NextTurn();
-            Debug.LogFormat("Turn {0} - {1}",TurnCounter,CurrentCharacter.Name);
-			if (teams[1].Contains(CurrentCharacter))
-				Debug.LogFormat("Good guy team turn");
-			else
-				Debug.LogFormat("bad guys turn");
-        }*/
     }
 	
 	// Update is called once per frame
@@ -73,7 +68,7 @@ public class TurnManager : Singleton<TurnManager>
         {
             TurnOrder.Enqueue(c);
         }
-		NextTurn();
+        NextTurn();
     }
 
     public void RegisterCharacter(Character ch)
@@ -84,6 +79,7 @@ public class TurnManager : Singleton<TurnManager>
 			teams[ch.Team] = new List<Character>();
 		teams[ch.Team].Add(ch);
         OnRegisterCharacter.Invoke(ch);
+        ch.OnTargetSelected.AddListener(SelectTarget);
     }
 
     public void RegisterGrenade(Grenade g)
@@ -101,12 +97,12 @@ public class TurnManager : Singleton<TurnManager>
 		{
 			CurrentCharacter = TurnOrder.Dequeue();
 		}
-		// Queue them back into the turn order
+        // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
-		SelectTarget();
+        // Ready mode
+        CurrentMode = SelectMode.Skill;
         // Tell everyone it's the next turn
-        if (OnChangeTurn != null)
-            OnChangeTurn.Invoke(CurrentCharacter);
+        OnChangeTurn.Invoke(CurrentCharacter);
     }
 
 	public void Attack()
@@ -116,8 +112,8 @@ public class TurnManager : Singleton<TurnManager>
 		if (CurrentCharacter.myTarget.isDead) 
 		{
 			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
-			if (OnCharacterDeath != null)
-				OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
+            // Tell everyone the character is dead
+		    OnCharacterDeath.Invoke(CurrentCharacter.myTarget);
 			teams[CurrentCharacter.myTarget.Team].Remove(CurrentCharacter.myTarget);
 			if(teams[1].Count == 0)
 			{
@@ -133,14 +129,42 @@ public class TurnManager : Singleton<TurnManager>
 		NextTurn();
 	}
 
-	public void SelectTarget()
+    // Sets the current target
+    public void SetCurrentTarget(Character target)
+    {
+        CurrentCharacter.SetTarget(target);
+        if (CurrentSkill != null)
+        {
+            // TODO: For when skills actually matter
+            //CurrentSkill.Execute();
+            Attack();
+            CurrentSkill = null;
+        }
+    }
+
+    public void SetCurrentSkill(Skill sk)
+    {
+        CurrentSkill = sk;
+        // TODO: Determine what mode to set after skill is selected... for now, always enemy
+        ChangeMode(SelectMode.Enemy);
+
+    }
+
+    // Informs everyone what the current target is. Should not be used by anything other than the event.
+    // TODO: Is this redundant? Or maybe there should be a data object for the turn data instead of doing so much in TurnManager...
+	protected void SelectTarget(Character target)
 	{
-		// bad test code to set a random target
-		int t = 1;
-		if (teams[t].Contains(CurrentCharacter)) 
-			t = 2;
-		CurrentCharacter.SetTarget(teams[t][Random.Range(0,teams[t].Count)]);
-		if (OnEnemySelect != null)
-			OnEnemySelect.Invoke(CurrentCharacter.myTarget);
-	}
+        // Tell everyone the active target has changed
+        OnEnemySelect.Invoke(CurrentCharacter.myTarget);
+    }
+
+    public void ChangeMode(SelectMode mode)
+    {
+        Debug.Log("Changing to mode: " + mode);
+        CurrentMode = mode;
+        // Tell everyone the selection has changed
+        OnSelectModeChange.Invoke(mode);
+    }
 }
+
+public enum SelectMode { None, Skill, Enemy, Team }

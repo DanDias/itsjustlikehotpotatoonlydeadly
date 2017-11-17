@@ -13,6 +13,7 @@ public class Character
 
     // Events
     public CharacterEvent OnPositionChange = new CharacterEvent();
+    public CharacterEvent OnTargetSelected = new CharacterEvent();
 
     public List<Grenade> myGrenades;
 	public Character myTarget;
@@ -86,5 +87,6 @@ public class Character
 	public void SetTarget(Character target)
 	{
 		myTarget = target;
+        OnTargetSelected.Invoke(target);
 	}
 }

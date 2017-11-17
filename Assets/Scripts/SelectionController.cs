@@ -17,7 +17,6 @@ public class SelectionController : MonoBehaviour
     {
         // Set the pointer to the CurrentCharacter
         pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
-		// Set enemy selector to current target
     }
 
 	public void SelectNewEnemy(Character ch)
@@ -29,6 +28,12 @@ public class SelectionController : MonoBehaviour
             enemySelectObject.SetActive(true);
             // Set enemy selector to target
             enemySelectObject.transform.position = ch.Position + new Vector3(0, -0.9f, 0);
+            // Tween it to make it disappear after 3 seconds
+            SpriteRenderer sr = enemySelectObject.GetComponent<SpriteRenderer>();
+            sr.color = new Color(1, 1, 1, 1);
+            GoTween gt = Go.to(sr, 3f, new GoTweenConfig().colorProp("color", new Color(1, 1, 1, 0)));
+            gt.easeType = GoEaseType.CubicOut;
+            
         }
 	}
 }
