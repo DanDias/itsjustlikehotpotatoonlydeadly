@@ -9,7 +9,7 @@ public class CharacterInfoWindowController : MonoBehaviour
 	public Text charName;
 	public GameObject charImage;
 
-	public void Start()
+	public void Awake()
 	{
 		TurnManager.Instance.OnChangeTurn.AddListener(ChangeCharactInfoWindow);
 	}
