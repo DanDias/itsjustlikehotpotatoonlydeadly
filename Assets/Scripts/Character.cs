@@ -17,11 +17,12 @@ public class Character
 
     public List<Grenade> myGrenades;
 	public Character myTarget;
+    // TODO: Maybe eventually replace these with a character state
 	public bool isDead;
+    public bool isKnockedDown;
 
 	public string staticSprite;
-
-
+    
 	int leftOrRight = -1;
 
 	public Character(string name, int t)
@@ -30,15 +31,15 @@ public class Character
 		myGrenades = new List<Grenade>();
 		myTarget = null;
 		isDead = false;
+        isKnockedDown = false;
 		Team = t;
 		if(Team == 2)
 			leftOrRight = 1;
         Skills = new List<Skill>();
         // TODO: Load skills from text file or something
-        Skills.Add(new Skill("Hurl Grenade"));
-        Skills.Add(new Skill("Lob Grenade"));
-        Skills.Add(new Skill("Throw Grenade"));
-        Skills.Add(new Skill("Do something cool"));
+        Skills.Add(new Skills.Throw());
+        Skills.Add(new Skills.Knockdown());
+        Skills.Add(new Skills.Cook());
     }
 
     public void SetPosition(Vector3 pos)

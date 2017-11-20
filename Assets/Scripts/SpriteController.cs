@@ -33,6 +33,7 @@ public class SpriteController : MonoBehaviour
         TurnManager.Instance.OnRegisterCharacter.AddListener(CreateCharacter);
 		TurnManager.Instance.OnCharacterDeath.AddListener(KillCharacter);
         TurnManager.Instance.OnRegisterGrenade.AddListener(CreateGrenade);
+        TurnManager.Instance.OnChangeTurn.AddListener(TurnChanged);
 	}
 	
 	// Update is called once per frame
@@ -93,6 +94,12 @@ public class SpriteController : MonoBehaviour
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;
+    }
+
+    public void TurnChanged(Character c)
+    {
+        Animator anim = CharacterToGameObj[c].GetComponent<Animator>();
+        anim.SetBool("KnockedDown",c.isKnockedDown);
     }
 
     public void CreateGrenade(Grenade g)

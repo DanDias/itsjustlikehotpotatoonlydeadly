@@ -38,13 +38,24 @@ public class ListController : MonoBehaviour
                 obj = ContentPanel.transform.GetChild(i).gameObject;
             }
             obj.GetComponent<Button>().onClick.RemoveAllListeners();
-            obj.GetComponent<Button>().onClick.AddListener(()=>
+            // TODO: Maybe this needs to be set on skill init?
+            skill.Source = ch;
+            if (skill.MeetRequirements())
             {
-                if (TurnManager.Instance.CurrentMode == SelectMode.Skill)
+                obj.GetComponent<Button>().enabled = true;
+                obj.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    TurnManager.Instance.SetCurrentSkill(skill);
-                }
-            });
+                    if (TurnManager.Instance.CurrentMode == SelectMode.Skill)
+                    {
+                        TurnManager.Instance.SetCurrentSkill(skill);
+                    }
+                });
+            }
+            else
+            {
+                Debug.Log(skill.Name + " does not meet requirements, disabling.");
+                obj.GetComponent<Button>().enabled = false;
+            }
             obj.GetComponentInChildren<Text>().text = skill.Name;
             obj.SetActive(true);
         }

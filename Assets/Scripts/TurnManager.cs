@@ -103,12 +103,22 @@ public class TurnManager : Singleton<TurnManager>
         CurrentMode = SelectMode.Skill;
         // Tell everyone it's the next turn
         OnChangeTurn.Invoke(CurrentCharacter);
+        // Tick down skill's cooldowns
+        foreach (Skill sk in CurrentCharacter.Skills)
+            sk.ChangeCooldown(-1);
+        // If someone is knocked down skip their turn
+        if (CurrentCharacter.isKnockedDown == true)
+        {
+            CurrentCharacter.isKnockedDown = false;
+            NextTurn();
+        }
     }
 
 	public void Attack()
 	{
+        // TODO: This is no longer an attack, it's mostly clean up.
 		Debug.LogFormat("{0} attacked {1}", CurrentCharacter.Name, CurrentCharacter.myTarget.Name);
-		CurrentCharacter.ThrowGrenade();
+		//CurrentCharacter.ThrowGrenade();
 		if (CurrentCharacter.myTarget.isDead) 
 		{
 			Debug.LogFormat ("{0} has died.", CurrentCharacter.myTarget.Name);
@@ -135,8 +145,11 @@ public class TurnManager : Singleton<TurnManager>
         CurrentCharacter.SetTarget(target);
         if (CurrentSkill != null)
         {
-            // TODO: For when skills actually matter
-            //CurrentSkill.Execute();
+            // TODO: This is terrible. Should probably make this syntax better
+            CurrentSkill.CharacterTargets.Clear();
+            CurrentSkill.CharacterTargets.Add(target);
+            CurrentSkill.Execute();
+            // TODO: Figure out a better way to deal with this change... just call Attack for now
             Attack();
             CurrentSkill = null;
         }
@@ -145,8 +158,14 @@ public class TurnManager : Singleton<TurnManager>
     public void SetCurrentSkill(Skill sk)
     {
         CurrentSkill = sk;
-        // TODO: Determine what mode to set after skill is selected... for now, always enemy
-        ChangeMode(SelectMode.Enemy);
+        CurrentSkill.Source = CurrentCharacter;
+        if (sk.Mode != SelectMode.None)
+            ChangeMode(sk.Mode);
+        else
+        {
+            sk.Execute();
+            NextTurn();
+        }
 
     }
 
