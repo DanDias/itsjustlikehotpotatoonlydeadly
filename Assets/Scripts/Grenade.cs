@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Grenade
 {
-	int maxTick;
+	int shakeCount;
 	public int CurrentTick { get; protected set;}
 	public bool exploded = false;
+	public bool boutToExplode = false;
 
     public Vector3 Position { get; protected set; }
 
@@ -15,9 +16,10 @@ public class Grenade
 
     public Grenade (int mxT)
 	{
-		maxTick = mxT;
-		CurrentTick = maxTick;
+		CurrentTick = mxT;
         TurnManager.Instance.RegisterGrenade(this);
+		shakeCount = Random.Range(1, 3);
+		Debug.LogFormat("shakeCount {0}", shakeCount);
 	}
 
     public void SetPosition(Vector3 pos)
@@ -32,6 +34,11 @@ public class Grenade
          //   OnRemove.Invoke(this);
 		CurrentTick += tick;
 		Debug.LogFormat("ticking... {0}", CurrentTick);
+		if(CurrentTick <= shakeCount)
+		{
+			Debug.LogFormat("bout to explode... {0}", CurrentTick);
+			boutToExplode = true;
+		}
 		if(CurrentTick <= 0)
 			Explode();
 	}
