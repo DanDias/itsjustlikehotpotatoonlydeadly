@@ -11,7 +11,7 @@ public class CharacterInfoWindowController : MonoBehaviour
 
 	public void Awake()
 	{
-		TurnManager.Instance.OnChangeTurn.AddListener(ChangeCharactInfoWindow);
+		TurnManager.Instance.OnTurnStart.AddListener(ChangeCharactInfoWindow);
 	}
 
 	public void ChangeCharactInfoWindow(Character ch)

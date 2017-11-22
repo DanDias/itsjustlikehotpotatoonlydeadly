@@ -29,11 +29,9 @@ public class SpriteController : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        // Hook up to see when a new characters is registered
-        TurnManager.Instance.OnRegisterCharacter.AddListener(CreateCharacter);
-		TurnManager.Instance.OnCharacterDeath.AddListener(KillCharacter);
-        TurnManager.Instance.OnRegisterGrenade.AddListener(CreateGrenade);
-        TurnManager.Instance.OnChangeTurn.AddListener(TurnChanged);
+        // Hook up to global events
+        World.Instance.OnCharacterAdded.AddListener(CreateCharacter);
+        World.Instance.OnGrenadeAdded.AddListener(CreateGrenade);
 	}
 	
 	// Update is called once per frame
@@ -94,9 +92,37 @@ public class SpriteController : MonoBehaviour
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;
+        // Hook events
+        ch.OnChange.AddListener(CharacterChange);
+        ch.OnThrowStart.AddListener(CharacterStartThrow);
+        ch.OnActionEnd.AddListener(CharacterEndAction);
+        ch.OnTargetSelected.AddListener(CharacterSelected);
     }
 
-    public void TurnChanged(Character c)
+    protected void CharacterChange(Character c)
+    {
+        if (c.isDead)
+            KillCharacter(c);
+        if (c.isKnockedDown)
+            KnockdownCharacter(c);
+    }
+
+    protected void CharacterStartThrow(ThrowData data)
+    {
+
+    }
+
+    protected void CharacterEndAction(Character c)
+    {
+
+    }
+
+    protected void CharacterSelected(Character c)
+    {
+
+    }
+
+    public void KnockdownCharacter(Character c)
     {
         Animator anim = CharacterToGameObj[c].GetComponent<Animator>();
         anim.SetBool("KnockedDown",c.isKnockedDown);
@@ -106,11 +132,20 @@ public class SpriteController : MonoBehaviour
     {
         GameObject obj = Instantiate(grenadePrefab, TurnManager.Instance.CurrentCharacter.Position + grenadeArmOffset, Quaternion.identity);
         g.OnChange.AddListener(ChangeGrenade);
-        //g.OnRemove.AddListener(RemoveGrenade);
+        g.OnMove.AddListener(MoveGrenade);
         GrenadeToGameObj[g] = obj;
     }
 
     public void ChangeGrenade(Grenade g)
+    {
+        GameObject obj = GrenadeToGameObj[g];
+        
+        gAnim = obj.GetComponent<Animator>();
+        grenadeSettle(g);
+
+    }
+
+    public void MoveGrenade(Grenade g)
     {
         GameObject obj = GrenadeToGameObj[g];
         // If the grenade has switched positions, move it to their hand
@@ -125,50 +160,59 @@ public class SpriteController : MonoBehaviour
                 end
             };
             var path = new GoSpline(points);
-			gAnim = obj.GetComponent<Animator>();
-			gAnim.SetTrigger("isMoving");
+            gAnim = obj.GetComponent<Animator>();
+            gAnim.SetTrigger("isMoving");
             GoTween gt = Go.to(obj.transform, 1f, new GoTweenConfig().positionPath(path, false));
             gt.setOnCompleteHandler(t =>
             {
-				gAnim = obj.GetComponent<Animator>();
-				if(g.boutToExplode)
-					gAnim.SetTrigger("isShaking");
-				else
-					gAnim.SetTrigger("isStopped");
-				
-                if (g.exploded)
-                {
-					//obj.GetComponent<Animator>().enabled = false;
-					gAnim.enabled = false;
-                    obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
-                    obj.transform.localScale = new Vector3(.1f, .1f, 0f);
-                    GrenadesToRemove[g] = 0;
-                }
+                grenadeSettle(g);
             });
 
         }
     }
 
+    protected void grenadeSettle(Grenade g)
+    {
+        GameObject obj = GrenadeToGameObj[g];
+
+        gAnim = obj.GetComponent<Animator>();
+        if (g.boutToExplode)
+            gAnim.SetTrigger("isShaking");
+        else
+            gAnim.SetTrigger("isStopped");
+    }
+
+    protected void grenadeExploded(Grenade g)
+    {
+        GameObject obj = GrenadeToGameObj[g];
+
+        gAnim = obj.GetComponent<Animator>();
+        gAnim.enabled = false;
+        obj.GetComponent<SpriteRenderer>().sprite = explosionSprite;
+        obj.transform.localScale = new Vector3(.1f, .1f, 0f);
+        GrenadesToRemove[g] = 0;
+    }
+
     public void RemoveGrenade(Grenade g)
     {
         GameObject obj = GrenadeToGameObj[g];
-        //g.OnRemove.RemoveAllListeners();
         g.OnChange.RemoveAllListeners();
+        g.OnMove.RemoveAllListeners();
         Destroy(obj);
         GrenadeToGameObj.Remove(g);
 		GrenadesToRemove.Remove(g);
     }
 
-	public void KillCharacter(Character ch)
+	public void KillCharacter(Character c)
 	{
-		Debug.LogFormat ("kill character {0}", ch.Name);
-		CharactersToDie[ch] = 0;
+		Debug.LogFormat ("kill character {0}", c.Name);
+		CharactersToDie[c] = 0;
 	}
 
-	void PlayDeathAnimation(Character ch)
+	void PlayDeathAnimation(Character c)
 	{
-		CharactersToDie.Remove(ch);
-		cAnim = CharacterToGameObj[ch].GetComponent<Animator>();
+		CharactersToDie.Remove(c);
+		cAnim = CharacterToGameObj[c].GetComponent<Animator>();
 		cAnim.SetTrigger("Die");
 	}
 }

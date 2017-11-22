@@ -955,6 +955,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2119996943}
+  - component: {fileID: 2119996948}
   - component: {fileID: 2119996942}
   - component: {fileID: 2119996945}
   - component: {fileID: 2119996946}
@@ -1054,3 +1055,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grass: {fileID: 1736922741217228, guid: cfae0a6033f8145a8b4500b41c8fefb7, type: 2}
   dirt: {fileID: 1491641868306228, guid: cc6050ae24f3140a18664fbf53b99018, type: 2}
+--- !u!114 &2119996948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2119996941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58583aea26063e146a9a479cd32d3b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -2,37 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionController : MonoBehaviour
+public class SelectionController : Singleton<SelectionController>
 {
     public GameObject pointerObject;
 	public GameObject enemySelectObject;
 
+    public SelectMode CurrentMode { get; protected set; }
+
     public void Awake()
     {
-        TurnManager.Instance.OnChangeTurn.AddListener(SelectNewCharacter);
-        TurnManager.Instance.OnEnemySelect.AddListener(SelectNewEnemy);
+        TurnManager.Instance.OnTurnStart.AddListener(SelectNewCharacter);
     }
 
     public void SelectNewCharacter(Character ch)
     {
+        // Ready mode
+        CurrentMode = SelectMode.Skill;
         // Set the pointer to the CurrentCharacter
         pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
+        ch.OnTargetSelected.AddListener(SelectNewEnemy);
     }
 
-	public void SelectNewEnemy(Character ch)
+    public void ChangeMode(SelectMode mode)
+    {
+        Debug.Log("Changing to mode: " + mode);
+        CurrentMode = mode;
+        // Tell everyone the selection has changed
+        //OnSelectModeChange.Invoke(mode);
+    }
+
+    public void SelectNewEnemy(Character ch)
 	{
-        if (ch == null)
+        if (ch.Target == null)
             enemySelectObject.SetActive(false);
         else
         {
             enemySelectObject.SetActive(true);
             // Set enemy selector to target
-            enemySelectObject.transform.position = ch.Position + new Vector3(0, -0.9f, 0);
+            enemySelectObject.transform.position = ch.Target.Position + new Vector3(0, -0.9f, 0);
             // Tween it to make it disappear after 3 seconds
             SpriteRenderer sr = enemySelectObject.GetComponent<SpriteRenderer>();
             sr.color = new Color(1, 1, 1, 1);
             GoTween gt = Go.to(sr, 3f, new GoTweenConfig().colorProp("color", new Color(1, 1, 1, 0)));
             gt.easeType = GoEaseType.CubicOut;
+            TurnManager.Instance.CurrentCharacter.ExecuteSkill();
             
         }
 	}

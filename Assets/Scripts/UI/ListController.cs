@@ -9,9 +9,9 @@ public class ListController : MonoBehaviour
     public GameObject ListItemPrefab;
 
 	// Use this for initialization
-	void Start ()
+	void Awake()
     {
-        TurnManager.Instance.OnChangeTurn.AddListener(PopulateSkills);
+        TurnManager.Instance.OnTurnStart.AddListener(PopulateSkills);
     }
 	
 	// Update is called once per frame
@@ -45,9 +45,14 @@ public class ListController : MonoBehaviour
                 obj.GetComponent<Button>().enabled = true;
                 obj.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    if (TurnManager.Instance.CurrentMode == SelectMode.Skill)
+                    if (SelectionController.Instance.CurrentMode == SelectMode.Skill)
                     {
-                        TurnManager.Instance.SetCurrentSkill(skill);
+                        TurnManager.Instance.CurrentCharacter.SetActiveSkill(skill);
+                        //TODO: This seems hacky. Target for refactoring.
+                        if (skill.Mode == SelectMode.None)
+                            TurnManager.Instance.CurrentCharacter.ExecuteSkill();
+                        else
+                            SelectionController.Instance.ChangeMode(skill.Mode);
                     }
                 });
             }

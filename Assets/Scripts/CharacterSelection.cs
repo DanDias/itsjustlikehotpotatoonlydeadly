@@ -11,11 +11,11 @@ public class CharacterSelection : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        SelectMode mode = TurnManager.Instance.CurrentMode;
+        SelectMode mode = SelectionController.Instance.CurrentMode;
         if (mode == SelectMode.Enemy && TurnManager.Instance.CurrentCharacter.Team != Me.Team)
         {
             // Select character
-            TurnManager.Instance.SetCurrentTarget(Me);
+            TurnManager.Instance.CurrentCharacter.SetTarget(Me);
         }
     }
 }
