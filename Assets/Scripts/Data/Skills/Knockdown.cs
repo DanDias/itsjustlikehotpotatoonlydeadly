@@ -18,7 +18,7 @@ namespace Skills
         {
             foreach (Character c in CharacterTargets)
             {
-                c.isKnockedDown = true;
+                c.SetKnockdown(true);
             }
             Source.ThrowGrenade();
             base.Execute();

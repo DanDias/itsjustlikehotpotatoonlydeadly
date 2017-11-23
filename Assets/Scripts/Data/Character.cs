@@ -22,8 +22,8 @@ public class Character
     protected List<Grenade> myGrenades;
 	protected Character myTarget;
     // TODO: Maybe eventually replace these with a character state
-	public bool isDead;
-    public bool isKnockedDown;
+	public bool isDead { get; protected set; }
+    public bool isKnockedDown { get; protected set; }
 
 	public string staticSprite;
     
@@ -62,18 +62,22 @@ public class Character
 		{
             if (myGrenades.Count == 0)
             {
-                Grenade g = new Grenade(3);
+                //Grenade g = new Grenade(3);
+                Grenade g = new Grenade(1); // For debugging grenade explodes
                 World.Instance.AddGrenade(g);
                 myGrenades.Add(g);
+                g.OnExploded.AddListener(grenadeExploded);
             }
             OnThrowStart.Invoke(new ThrowData(this, myTarget, ActiveSkill, myGrenades[0]));
+            // TODO: This would be immediate... maybe think of something smarter
             myTarget.ReceiveGrenade(myGrenades[0]);
-            FinishedThrowingGrenade();
+            FinishedThrowingGrenade(); 
 		}
 	}
 
     public void FinishedThrowingGrenade()
     {
+        myGrenades[0].OnExploded.RemoveListener(grenadeExploded);
         myGrenades.Remove(myGrenades[0]);
         foreach (Grenade g in myGrenades)
         {
@@ -86,15 +90,7 @@ public class Character
 	{
 		thrownGrenade.SetPosition(Position + new Vector3(leftOrRight * myGrenades.Count, 0, 0));
 		myGrenades.Add(thrownGrenade);
-		if (thrownGrenade.exploded) 
-		{
-			foreach(Grenade g in myGrenades)
-			{
-				g.Explode();
-				g.SetPosition(g.Position);
-			}
-			isDead = true;
-		}
+        thrownGrenade.OnExploded.AddListener(grenadeExploded);
 	}
 
     public void SetActiveSkill(Skill skill)
@@ -114,9 +110,22 @@ public class Character
             ActiveSkill.CharacterTargets.Add(target);
         }
         // TODO: This event is a little weird, passing in character since it has a Target.
-        //       Might expect this to be the target character... thought about args with Character, Character, but eh...
+        //       Might expect this to be the target character... 
+        //       thought about args with Character, Character, but eh...
         OnTargetSelected.Invoke(this); 
 	}
+
+    public void SetKnockdown(bool status)
+    {
+        isKnockedDown = status;
+        OnChange.Invoke(this);
+    }
+
+    public void SetDead(bool status)
+    {
+        isDead = true;
+        OnChange.Invoke(this);
+    }
 
     public void ExecuteSkill()
     {
@@ -126,5 +135,17 @@ public class Character
             OnActionEnd.Invoke(this);
             ActiveSkill = null;
         }
+    }
+
+    protected void grenadeExploded(Grenade g)
+    {
+        foreach(Grenade og in myGrenades)
+        {
+            if (!og.exploded)
+            {
+                og.Explode();
+            }
+        }
+        SetDead(true);
     }
 }

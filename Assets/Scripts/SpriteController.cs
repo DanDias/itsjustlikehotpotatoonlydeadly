@@ -133,6 +133,7 @@ public class SpriteController : MonoBehaviour
         GameObject obj = Instantiate(grenadePrefab, TurnManager.Instance.CurrentCharacter.Position + grenadeArmOffset, Quaternion.identity);
         g.OnChange.AddListener(ChangeGrenade);
         g.OnMove.AddListener(MoveGrenade);
+        g.OnExploded.AddListener(grenadeExploded);
         GrenadeToGameObj[g] = obj;
     }
 
@@ -142,7 +143,6 @@ public class SpriteController : MonoBehaviour
         
         gAnim = obj.GetComponent<Animator>();
         grenadeSettle(g);
-
     }
 
     public void MoveGrenade(Grenade g)

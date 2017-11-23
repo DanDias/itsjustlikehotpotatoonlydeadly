@@ -20,7 +20,6 @@ public class TurnManager : Singleton<TurnManager>
     // Properties
     public int TurnCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
-    public Skill CurrentSkill { get; protected set; } // TODO: Remove. Moved to Character.ActiveSkill
 
     protected FlexibleQueue<Character> TurnOrder;
 
@@ -65,9 +64,10 @@ public class TurnManager : Singleton<TurnManager>
         foreach (Skill sk in CurrentCharacter.Skills)
             sk.ChangeCooldown(-1);
         // If someone is knocked down skip their turn
+        // TODO: This seems misplaced... Not sure where it should go yet.
         if (CurrentCharacter.isKnockedDown == true)
         {
-            CurrentCharacter.isKnockedDown = false;
+            CurrentCharacter.SetKnockdown(false);
             NextTurn();
         }
         CurrentCharacter.OnActionEnd.AddListener(characterFinished);
@@ -78,15 +78,6 @@ public class TurnManager : Singleton<TurnManager>
         OnRoundStart.Invoke();
         World.Instance.Tick();
         OnRoundEnd.Invoke();
-    }
-    
-    // Informs everyone what the current target is. Should not be used by anything other than the event.
-    // TODO: Is this redundant? Or maybe there should be a data object for the turn data instead of doing so much in TurnManager...
-	protected void SelectTarget(Character target)
-	{
-        // Tell everyone the active target has changed
-        //OnEnemySelect.Invoke(CurrentCharacter.Target);
-        Debug.Log("Calling TurnManager.SelectTarget... shouldn't be");
     }
 
     protected void checkGameEnd()
@@ -120,7 +111,7 @@ public class TurnManager : Singleton<TurnManager>
     protected void characterFinished(Character c)
     {
         c.OnActionEnd.RemoveListener(characterFinished);
-        if (CurrentCharacter.Target.isDead)
+        if (CurrentCharacter.Target != null && CurrentCharacter.Target.isDead)
         {
             Debug.LogFormat("{0} has died.", CurrentCharacter.Target.Name);
             // Tell everyone the character is dead
