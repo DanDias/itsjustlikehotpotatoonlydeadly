@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class ListController : MonoBehaviour
 {
     public GameObject ContentPanel;
+
     public GameObject ListItemPrefab;
 
 	// Use this for initialization
 	void Awake()
     {
         TurnManager.Instance.OnTurnStart.AddListener(PopulateSkills);
-        TurnManager.Instance.OnRoundStart.AddListener(NewRound);
     }
 	
 	// Update is called once per frame
@@ -20,11 +20,6 @@ public class ListController : MonoBehaviour
     {
 		
 	}
-
-    void NewRound()
-    {
-
-    }
 
     void DisableSkills(ThrowData data)
     {

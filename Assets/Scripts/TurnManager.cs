@@ -13,8 +13,8 @@ public class TurnManager : Singleton<TurnManager>
 
     public CharacterEvent OnTurnStart = new CharacterEvent();
     public CharacterEvent OnTurnEnd = new CharacterEvent();
-    public UnityEvent OnRoundStart = new UnityEvent();
-    public UnityEvent OnRoundEnd = new UnityEvent();
+    public IntEvent OnRoundStart = new IntEvent();
+    public IntEvent OnRoundEnd = new IntEvent();
     public SelectModeEvent OnSelectModeChange = new SelectModeEvent();
 
     // Properties
@@ -41,7 +41,7 @@ public class TurnManager : Singleton<TurnManager>
         TurnOrder = new FlexibleQueue<Character>(World.Instance.Characters.OrderBy(x=>Random.Range(-1,1)));
         lastCharacter = TurnOrder.Last();
         World.Instance.OnCharacterRemoved.AddListener(updateQueue);
-        OnRoundStart.Invoke();
+        OnRoundStart.Invoke(RoundCounter);
         NextTurn();
     }
 
@@ -74,10 +74,10 @@ public class TurnManager : Singleton<TurnManager>
 
     public void NextRound()
     {
-        OnRoundEnd.Invoke();
+        OnRoundEnd.Invoke(RoundCounter);
         RoundCounter++;
         World.Instance.Tick();
-        OnRoundStart.Invoke();
+        OnRoundStart.Invoke(RoundCounter);
     }
 
     protected void checkGameEnd()
