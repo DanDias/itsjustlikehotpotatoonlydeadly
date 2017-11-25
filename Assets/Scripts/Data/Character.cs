@@ -13,6 +13,8 @@ public class Character
     public List<Grenade> Grenades { get { return myGrenades; } }
     public Character Target { get { return myTarget; } }
 
+    public static Vector3 armOffset = new Vector3(0.35f, -0.45f, 0);
+
     // Events
     public CharacterEvent OnChange = new CharacterEvent();
     public CharacterEvent OnTargetSelected = new CharacterEvent();
@@ -46,6 +48,11 @@ public class Character
         Skills.Add(new Skills.Cook());
     }
 
+    public void Update(float deltaTime)
+    {
+
+    }
+
     public void SetPosition(Vector3 pos)
     {
         Position = pos;
@@ -62,17 +69,18 @@ public class Character
 		{
             if (myGrenades.Count == 0)
             {
-                //Grenade g = new Grenade(3);
-                Grenade g = new Grenade(1); // For debugging grenade explodes
+                Grenade g = new Grenade(3);
+                //Grenade g = new Grenade(1); // For debugging grenade explodes
+                g.SetPosition(Position);
                 World.Instance.AddGrenade(g);
                 myGrenades.Add(g);
                 g.OnExploded.AddListener(grenadeExploded);
             }
-            OnThrowStart.Invoke(new ThrowData(this, myTarget, ActiveSkill, myGrenades[0]));
-            // TODO: This would be immediate... maybe think of something smarter
-            myTarget.ReceiveGrenade(myGrenades[0]);
-            FinishedThrowingGrenade(); 
-		}
+            ThrowData data = new ThrowData(this, myTarget, ActiveSkill, myGrenades[0]);
+            myGrenades[0].Throw(data);
+            OnThrowStart.Invoke(data);
+            FinishedThrowingGrenade();
+        }
 	}
 
     public void FinishedThrowingGrenade()
@@ -81,15 +89,20 @@ public class Character
         myGrenades.Remove(myGrenades[0]);
         foreach (Grenade g in myGrenades)
         {
-            g.SetPosition(g.Position + new Vector3(-leftOrRight, 0, 0));
+            g.SetPosition(g.Position + armOffset + new Vector3(-leftOrRight, 0, 0));
         }
+    }
+
+    public void ActionCompleted()
+    {
         OnActionEnd.Invoke(this);
     }
 
 	public void ReceiveGrenade(Grenade thrownGrenade)
 	{
-		thrownGrenade.SetPosition(Position + new Vector3(leftOrRight * myGrenades.Count, 0, 0));
+		thrownGrenade.SetPosition(Position + armOffset + new Vector3(leftOrRight * myGrenades.Count, 0, 0));
 		myGrenades.Add(thrownGrenade);
+        myGrenades[0].SetPosition(Position + armOffset);
         thrownGrenade.OnExploded.AddListener(grenadeExploded);
 	}
 
@@ -132,7 +145,6 @@ public class Character
         if (ActiveSkill != null)
         {
             ActiveSkill.Execute();
-            OnActionEnd.Invoke(this);
             ActiveSkill = null;
         }
     }

@@ -23,9 +23,9 @@ namespace Skills
         public override void Execute()
         {
             // Shouldn't be null, bust just in case
-            if (Source.Grenades[0] != null)
-                Source.Grenades[0].ChangeTick(-1);
+            // Do nothing and it'll advance next turn
             base.Execute();
+            Source.ActionCompleted();
         }
     }
 }

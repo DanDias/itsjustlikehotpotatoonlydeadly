@@ -10,12 +10,12 @@ public class SpriteController : MonoBehaviour
     public Sprite explosionSprite;
 
 	int gExplodeTime = 75;
-	int cDeathTime = 75;
+	int cDeathTime = 5;
 
 	Animator cAnim;
 	Animator gAnim;
-	Grenade gToRemove;
-    Vector3 grenadeArmOffset = new Vector3(0.35f, -0.45f, 0);
+	//Grenade gToRemove;
+    //Vector3 grenadeArmOffset = new Vector3(0.35f, -0.45f, 0);
 
     public Vector3[] positions;
 
@@ -130,25 +130,30 @@ public class SpriteController : MonoBehaviour
 
     public void CreateGrenade(Grenade g)
     {
-        GameObject obj = Instantiate(grenadePrefab, TurnManager.Instance.CurrentCharacter.Position + grenadeArmOffset, Quaternion.identity);
+        GameObject obj = Instantiate(grenadePrefab, g.Position, Quaternion.identity);
         g.OnChange.AddListener(ChangeGrenade);
         g.OnMove.AddListener(MoveGrenade);
+        g.OnThrown.AddListener(ThrowGrenade);
+        g.OnCaught.AddListener(CatchGrenade);
         g.OnExploded.AddListener(grenadeExploded);
         GrenadeToGameObj[g] = obj;
     }
 
     public void ChangeGrenade(Grenade g)
     {
-        GameObject obj = GrenadeToGameObj[g];
-        
-        gAnim = obj.GetComponent<Animator>();
         grenadeSettle(g);
+    }
+
+    public void CatchGrenade(ThrowData data)
+    {
+        grenadeSettle(data.Grenade);
     }
 
     public void MoveGrenade(Grenade g)
     {
         GameObject obj = GrenadeToGameObj[g];
-        // If the grenade has switched positions, move it to their hand
+        obj.transform.position = g.Position;
+        /*
         if (Vector3.Distance(obj.transform.position, g.Position) > 0)
         {
             // Do curve
@@ -167,8 +172,14 @@ public class SpriteController : MonoBehaviour
             {
                 grenadeSettle(g);
             });
-
         }
+        */
+    }
+
+    public void ThrowGrenade(ThrowData data)
+    {
+        GameObject obj = GrenadeToGameObj[data.Grenade];
+        obj.GetComponent<Animator>().SetTrigger("isMoving");
     }
 
     protected void grenadeSettle(Grenade g)

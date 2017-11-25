@@ -18,7 +18,7 @@ public class TurnManager : Singleton<TurnManager>
     public SelectModeEvent OnSelectModeChange = new SelectModeEvent();
 
     // Properties
-    public int TurnCounter { get; protected set; }
+    public int RoundCounter { get; protected set; }
     public Character CurrentCharacter { get; protected set; }
 
     protected FlexibleQueue<Character> TurnOrder;
@@ -32,7 +32,7 @@ public class TurnManager : Singleton<TurnManager>
     /// </summary>
     public void StartBattle()
     {
-        TurnCounter = 0;
+        RoundCounter = 1;
         if (TurnOrder != null)
             TurnOrder.Clear();
         else
@@ -53,7 +53,6 @@ public class TurnManager : Singleton<TurnManager>
             if (CurrentCharacter == lastCharacter)
                 NextRound();
         }
-        TurnCounter++;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
         // Queue them back into the turn order
@@ -75,9 +74,10 @@ public class TurnManager : Singleton<TurnManager>
 
     public void NextRound()
     {
-        OnRoundStart.Invoke();
-        World.Instance.Tick();
         OnRoundEnd.Invoke();
+        RoundCounter++;
+        World.Instance.Tick();
+        OnRoundStart.Invoke();
     }
 
     protected void checkGameEnd()

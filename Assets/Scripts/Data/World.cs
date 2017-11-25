@@ -40,7 +40,12 @@ public class World
             return characters.GroupBy(x => x.Team).ToDictionary(x => x.Key, x => x.ToList());
         }
     }
-    
+
+    public void Update(float deltaTime)
+    {
+        grenades.ForEach(g => g.Update(deltaTime));
+        characters.ForEach(c => c.Update(deltaTime));
+    }
 
     public void AddCharacter(Character c)
     {

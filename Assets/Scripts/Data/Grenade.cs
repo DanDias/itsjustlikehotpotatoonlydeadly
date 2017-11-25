@@ -13,9 +13,13 @@ public class Grenade
 
     public GrenadeEvent OnMove = new GrenadeEvent();
     public GrenadeEvent OnChange = new GrenadeEvent();
-    public GrenadeEvent OnThrown = new GrenadeEvent();
-    public GrenadeEvent OnCaught = new GrenadeEvent();
+    public ThrowEvent OnThrown = new ThrowEvent();
+    public ThrowEvent OnCaught = new ThrowEvent();
     public GrenadeEvent OnExploded = new GrenadeEvent();
+
+    protected ThrowData currentThrow;
+    protected float throwTime = 0; 
+    protected static float speed = 1f;
 
     public Grenade (int mxT)
 	{
@@ -24,10 +28,40 @@ public class Grenade
 		Debug.LogFormat("shakeCount {0}", shakeCount);
 	}
 
+    public void Update(float deltaTime)
+    {
+        if (currentThrow != null)
+        {
+            throwTime += deltaTime;
+            Vector3 newPos = Vector3.Lerp(currentThrow.Source.Position, currentThrow.Target.Position, throwTime * speed);
+            SetPosition(newPos);
+            if (Vector3.Distance(newPos,currentThrow.Target.Position) == 0)
+            {
+                currentThrow.Target.ReceiveGrenade(this); // TODO: This is probably bad... but whatever
+                OnCaught.Invoke(currentThrow);
+                currentThrow.Source.ActionCompleted();
+                currentThrow = null;
+                throwTime = 0;
+            }
+        }
+    }
+
     public void SetPosition(Vector3 pos)
     {
         Position = pos;
         OnMove.Invoke(this);
+    }
+
+    public void Throw(ThrowData data)
+    {
+        currentThrow = data;
+        OnThrown.Invoke(data);
+    }
+
+    public void Catch(ThrowData data)
+    {
+        OnCaught.Invoke(data);
+        currentThrow = null;
     }
 
 	public void ChangeTick(int tick)

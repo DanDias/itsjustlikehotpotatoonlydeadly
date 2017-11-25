@@ -14,8 +14,10 @@ public class ThrowEvent : UnityEvent<ThrowData> { }
 public class IntEvent : UnityEvent<int> { }
 
 
-public struct ThrowData
+public class ThrowData
 {
+    // TODO: Maybe add curve and stuff... someday
+
     private readonly Character source;
     public Character Source { get { return source; } }
     private readonly Character target;

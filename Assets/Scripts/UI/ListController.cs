@@ -12,6 +12,7 @@ public class ListController : MonoBehaviour
 	void Awake()
     {
         TurnManager.Instance.OnTurnStart.AddListener(PopulateSkills);
+        TurnManager.Instance.OnRoundStart.AddListener(NewRound);
     }
 	
 	// Update is called once per frame
@@ -20,8 +21,24 @@ public class ListController : MonoBehaviour
 		
 	}
 
+    void NewRound()
+    {
+
+    }
+
+    void DisableSkills(ThrowData data)
+    {
+        data.Source.OnThrowStart.RemoveListener(DisableSkills);
+        for(int i=0;i<ContentPanel.transform.childCount;i++)
+        {
+            Transform obj = ContentPanel.transform.GetChild(i);
+            obj.gameObject.SetActive(false);
+        }
+    }
+
     void PopulateSkills(Character ch)
     {
+        ch.OnThrowStart.AddListener(DisableSkills);
         List<Skill> skills = ch.Skills;
 
         for(int i=0;i< skills.Count;i++)
