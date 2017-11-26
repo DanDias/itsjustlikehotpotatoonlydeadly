@@ -62,15 +62,15 @@ public class Character
 
 	public void ThrowGrenade()
 	{
-		Debug.LogFormat ("Throwing grenade");
+		//Debug.LogFormat ("Throwing grenade");
 		if (myTarget == null)
 			System.Console.WriteLine ("Select a target");
 		else 
 		{
             if (myGrenades.Count == 0)
             {
-                Grenade g = new Grenade(3);
-                //Grenade g = new Grenade(1); // For debugging grenade explodes
+                //Grenade g = new Grenade(3);
+                Grenade g = new Grenade(1); // For debugging grenade explodes
                 g.SetPosition(Position);
                 World.Instance.AddGrenade(g);
                 myGrenades.Add(g);
@@ -87,9 +87,9 @@ public class Character
     {
         myGrenades[0].OnExploded.RemoveListener(grenadeExploded);
         myGrenades.Remove(myGrenades[0]);
-        foreach (Grenade g in myGrenades)
+        for(int i=0;i<myGrenades.Count;i++)
         {
-            g.SetPosition(g.Position + armOffset + new Vector3(-leftOrRight, 0, 0));
+            myGrenades[i].SetPosition(Position + armOffset + new Vector3(leftOrRight*i, 0, 0));
         }
     }
 

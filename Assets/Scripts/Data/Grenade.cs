@@ -25,7 +25,7 @@ public class Grenade
 	{
 		CurrentTick = mxT;
 		shakeCount = Random.Range(1, 3);
-		Debug.LogFormat("shakeCount {0}", shakeCount);
+		//Debug.LogFormat("shakeCount {0}", shakeCount);
 	}
 
     public void Update(float deltaTime)
@@ -67,10 +67,10 @@ public class Grenade
 	public void ChangeTick(int tick)
 	{
 		CurrentTick += tick;
-		Debug.LogFormat("ticking... {0}", CurrentTick);
+		//Debug.LogFormat("ticking... {0}", CurrentTick);
 		if(CurrentTick <= shakeCount)
 		{
-			Debug.LogFormat("bout to explode... {0}", CurrentTick);
+			//Debug.LogFormat("bout to explode... {0}", CurrentTick);
 			boutToExplode = true;
 		}
 		if(CurrentTick <= 0)

@@ -12,6 +12,7 @@ public class SelectionController : Singleton<SelectionController>
     public void Awake()
     {
         TurnManager.Instance.OnTurnStart.AddListener(SelectNewCharacter);
+        TurnManager.Instance.OnGameEnd.AddListener(gameOver);
     }
 
     public void SelectNewCharacter(Character ch)
@@ -25,7 +26,7 @@ public class SelectionController : Singleton<SelectionController>
 
     public void ChangeMode(SelectMode mode)
     {
-        Debug.Log("Changing to mode: " + mode);
+        //Debug.Log("Changing to mode: " + mode);
         CurrentMode = mode;
         // Tell everyone the selection has changed
         //OnSelectModeChange.Invoke(mode);
@@ -49,4 +50,9 @@ public class SelectionController : Singleton<SelectionController>
             
         }
 	}
+
+    void gameOver(int team)
+    {
+        pointerObject.SetActive(false);
+    }
 }

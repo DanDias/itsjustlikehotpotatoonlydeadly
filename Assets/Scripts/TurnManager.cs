@@ -53,8 +53,19 @@ public class TurnManager : Singleton<TurnManager>
             if (CurrentCharacter == lastCharacter)
                 NextRound();
         }
+        if (gameOver)
+            return;
         // Peel off the next character
         CurrentCharacter = TurnOrder.Dequeue();
+        // Remove dead characters from turn queue
+        while (CurrentCharacter.isDead)
+        {
+            if (CurrentCharacter == lastCharacter)
+                NextRound();
+            // Skip turn if they are dead
+            TurnOrder.Enqueue(CurrentCharacter);
+            CurrentCharacter = TurnOrder.Dequeue();
+        }
         // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
         // Tell everyone it's the next turn
@@ -77,18 +88,20 @@ public class TurnManager : Singleton<TurnManager>
         OnRoundEnd.Invoke(RoundCounter);
         RoundCounter++;
         World.Instance.Tick();
-        OnRoundStart.Invoke(RoundCounter);
+        checkGameEnd();
+        if (!gameOver)
+            OnRoundStart.Invoke(RoundCounter);
     }
 
     protected void checkGameEnd()
     {
-        if (World.Instance.Teams[1].Count == 0)
+        if (!World.Instance.Teams.ContainsKey(1)) // Everyone gone from team 1
         {
             // you lose
             OnGameEnd.Invoke(2);
             gameOver = true;
         }
-        else if (World.Instance.Teams[2].Count == 0)
+        else if (!World.Instance.Teams.ContainsKey(2)) // Everyone gone from team 2
         {
             // you win
             OnGameEnd.Invoke(1);
@@ -98,14 +111,7 @@ public class TurnManager : Singleton<TurnManager>
 
     protected void updateQueue(Character c)
     {
-        // Remove dead characters from turn queue
-        while (CurrentCharacter.isDead)
-        {
-            Character previous = CurrentCharacter;
-            CurrentCharacter = TurnOrder.Dequeue();
-            if (previous == lastCharacter)
-                lastCharacter = TurnOrder.Last();
-        }
+        
     }
 
     protected void characterFinished(Character c)

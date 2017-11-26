@@ -76,9 +76,28 @@ public class World
     /// </summary>
     public void Tick()
     {
-        foreach(Grenade g in grenades)
+        grenades.ForEach(g => g.ChangeTick(-1));
+
+        grenades.RemoveAll(g =>
         {
-            g.ChangeTick(-1);
-        }
+            if (g.exploded)
+            {
+                OnGrenadeRemoved.Invoke(g);
+                return true;
+            }
+            return false;
+        });
+
+        characters.RemoveAll(c =>
+        {
+            Debug.Log("Checking " + c.Name);
+            if (c.isDead)
+            {
+                Debug.Log("Removing " + c.Name);
+                OnCharacterRemoved.Invoke(c);
+                return true;
+            }
+            return false;
+        });
     }
 }

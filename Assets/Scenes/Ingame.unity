@@ -1300,4 +1300,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoundPanel: {fileID: 47625148}
+  RoundText: {fileID: 347495007}
   RoundNumText: {fileID: 1504959556}

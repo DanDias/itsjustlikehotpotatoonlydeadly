@@ -13,6 +13,7 @@ public class ListController : MonoBehaviour
 	void Awake()
     {
         TurnManager.Instance.OnTurnStart.AddListener(PopulateSkills);
+        TurnManager.Instance.OnGameEnd.AddListener(gameOver);
     }
 	
 	// Update is called once per frame
@@ -70,7 +71,7 @@ public class ListController : MonoBehaviour
             }
             else
             {
-                Debug.Log(skill.Name + " does not meet requirements, disabling.");
+                //Debug.Log(skill.Name + " does not meet requirements, disabling.");
                 obj.GetComponent<Button>().enabled = false;
             }
             obj.GetComponentInChildren<Text>().text = skill.Name;
@@ -83,5 +84,11 @@ public class ListController : MonoBehaviour
                 ContentPanel.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
+    }
+
+    void gameOver(int team)
+    {
+        // TODO: Something less dumb...
+        ContentPanel.transform.parent.parent.gameObject.SetActive(false);
     }
 }

@@ -216,7 +216,7 @@ public class SpriteController : MonoBehaviour
 
 	public void KillCharacter(Character c)
 	{
-		Debug.LogFormat ("kill character {0}", c.Name);
+		//Debug.LogFormat ("kill character {0}", c.Name);
 		CharactersToDie[c] = 0;
 	}
 

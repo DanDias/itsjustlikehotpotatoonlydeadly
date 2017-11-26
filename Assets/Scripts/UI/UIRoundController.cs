@@ -6,14 +6,16 @@ using UnityEngine.UI;
 public class UIRoundController : MonoBehaviour
 {
     public RectTransform RoundPanel;
+    public Text RoundText;
     public Text RoundNumText;
 
     protected GoTweenChain movementTween;
-
+    
 	// Use this for initialization
 	void Start ()
     {
-        TurnManager.Instance.OnRoundStart.AddListener(NewRound);
+        TurnManager.Instance.OnRoundStart.AddListener(newRound);
+        TurnManager.Instance.OnGameEnd.AddListener(gameOver);
         RoundPanel.anchoredPosition = new Vector2(0, 150);
 
         // Movement fun
@@ -23,15 +25,19 @@ public class UIRoundController : MonoBehaviour
         movementTween.append(new GoTween(RoundPanel, 0.5f, new GoTweenConfig().anchoredPosition(new Vector2(0, 150))));
     }
 
-    void NewRound(int round)
+    void newRound(int round)
     {
         RoundNumText.text = round.ToString();
         movementTween.restart();
     }
 
-    // Update is called once per frame
-    void Update ()
+    void gameOver(int team)
     {
-		
-	}
+        // TODO: This is dumb reuse
+        RoundText.text = "Team " + team.ToString();
+        RoundNumText.text = "Wins!";
+
+        RoundPanel.anchoredPosition = new Vector2(0, -50);
+
+    }
 }
