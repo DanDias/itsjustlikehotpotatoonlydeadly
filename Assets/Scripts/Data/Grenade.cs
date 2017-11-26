@@ -33,8 +33,9 @@ public class Grenade
         if (currentThrow != null)
         {
             throwTime += deltaTime;
+            Vector3 arc = new Vector3(0, Mathf.Sin(throwTime*Mathf.PI), 0);
             Vector3 newPos = Vector3.Lerp(currentThrow.Source.Position, currentThrow.Target.Position, throwTime * speed);
-            SetPosition(newPos);
+            SetPosition(newPos+arc);
             if (Vector3.Distance(newPos,currentThrow.Target.Position) == 0)
             {
                 currentThrow.Target.ReceiveGrenade(this); // TODO: This is probably bad... but whatever
