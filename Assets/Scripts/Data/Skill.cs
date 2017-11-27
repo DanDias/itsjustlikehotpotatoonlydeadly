@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
-public abstract class Skill : IMenuItem
+public class Skill : IMenuItem, IXmlSerializable
 {
     public string Name { get; set; }
     public string Description { get; set; }
@@ -48,4 +51,52 @@ public abstract class Skill : IMenuItem
     {
         return Cooldown == 0;
     }
+
+    #region Saving & Loading
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteAttributeString("Name", Name);
+        writer.WriteAttributeString("Type", GetType().ToString());
+        writer.WriteAttributeString("Description", Description);
+        writer.WriteAttributeString("Mode", Mode.ToString());
+        writer.WriteAttributeString("MaxCooldown", MaxCooldown.ToString());
+    }
+
+    public void ReadXml(XmlReader reader)
+    {
+        Name = reader.GetAttribute("Name");
+        Description = reader.GetAttribute("Description");
+        Mode = (SelectMode)Enum.Parse(typeof(SelectMode), reader.GetAttribute("Mode"));
+        MaxCooldown = int.Parse(reader.GetAttribute("MaxCooldown"));
+    }
+
+    public static Skill Create(XmlReader reader)
+    {
+        String type = reader.GetAttribute("Type");
+        switch(type)
+        {
+            case "Skills.Throw":
+                Skills.Throw throwSkill = new Skills.Throw();
+                throwSkill.ReadXml(reader);
+                return throwSkill;
+            case "Skills.Knockdown":
+                Skills.Knockdown knockdownSkill = new Skills.Knockdown();
+                knockdownSkill.ReadXml(reader);
+                return knockdownSkill;
+            case "Skills.Cook":
+                Skills.Cook cookSkill = new Skills.Cook();
+                cookSkill.ReadXml(reader);
+                return cookSkill;
+            default:
+                Skill emptySkill = new Skill();
+                emptySkill.ReadXml(reader);
+                return emptySkill;
+        }
+    }
+    #endregion
 }
