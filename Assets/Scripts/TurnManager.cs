@@ -68,8 +68,6 @@ public class TurnManager : Singleton<TurnManager>
         }
         // Queue them back into the turn order
         TurnOrder.Enqueue(CurrentCharacter);
-        // Tell everyone it's the next turn
-        OnTurnStart.Invoke(CurrentCharacter);
         // Tick down skill's cooldowns
         foreach (Skill sk in CurrentCharacter.Skills)
             sk.ChangeCooldown(-1);
@@ -80,6 +78,8 @@ public class TurnManager : Singleton<TurnManager>
             CurrentCharacter.SetKnockdown(false);
             NextTurn();
         }
+		// Tell everyone it's the next turn
+		OnTurnStart.Invoke(CurrentCharacter);
         CurrentCharacter.OnActionEnd.AddListener(characterFinished);
     }
 
