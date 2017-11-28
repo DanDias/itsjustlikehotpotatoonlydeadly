@@ -50,8 +50,8 @@ public class TurnManager : Singleton<TurnManager>
         if (CurrentCharacter != null)
         {
             OnTurnEnd.Invoke(CurrentCharacter);
-            if (CurrentCharacter == lastCharacter)
-                NextRound();
+			if(CurrentCharacter == lastCharacter)
+			   NextRound();
         }
         if (gameOver)
             return;
@@ -60,8 +60,8 @@ public class TurnManager : Singleton<TurnManager>
         // Remove dead characters from turn queue
         while (CurrentCharacter.isDead)
         {
-            if (CurrentCharacter == lastCharacter)
-                NextRound();
+			if(CurrentCharacter == lastCharacter)
+			   NextRound();
             // Skip turn if they are dead
             TurnOrder.Enqueue(CurrentCharacter);
             CurrentCharacter = TurnOrder.Dequeue();
@@ -76,7 +76,10 @@ public class TurnManager : Singleton<TurnManager>
         if (CurrentCharacter.isKnockedDown == true)
         {
             CurrentCharacter.SetKnockdown(false);
+			CurrentCharacter.SetGettingUp(true);
             NextTurn();
+			// if you don't return out it does some funny stuff like skip people's turns
+			return;
         }
 		// Tell everyone it's the next turn
 		OnTurnStart.Invoke(CurrentCharacter);

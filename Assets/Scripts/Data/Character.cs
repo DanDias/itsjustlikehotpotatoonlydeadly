@@ -29,6 +29,7 @@ public class Character : IXmlSerializable
     // TODO: Maybe eventually replace these with a character state
 	public bool isDead { get; protected set; }
     public bool isKnockedDown { get; protected set; }
+	public bool isGettingUp { get; protected set; }
 
 	public string staticSprite;
     
@@ -150,6 +151,12 @@ public class Character : IXmlSerializable
         isKnockedDown = status;
         OnChange.Invoke(this);
     }
+
+	public void SetGettingUp(bool status)
+	{
+		isGettingUp = status;
+		OnChange.Invoke(this);
+	}
 
     public void SetDead(bool status)
     {

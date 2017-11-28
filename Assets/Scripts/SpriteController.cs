@@ -101,10 +101,12 @@ public class SpriteController : MonoBehaviour
 
     protected void CharacterChange(Character c)
     {
-        if (c.isDead)
+        if(c.isDead)
             KillCharacter(c);
-        if (c.isKnockedDown)
-            KnockdownCharacter(c);
+		if(c.isKnockedDown)
+			KnockdownCharacter(c, true);
+		if(c.isGettingUp)
+			KnockdownCharacter(c, false);
     }
 
     protected void CharacterStartThrow(ThrowData data)
@@ -122,10 +124,10 @@ public class SpriteController : MonoBehaviour
 
     }
 
-    public void KnockdownCharacter(Character c)
+	public void KnockdownCharacter(Character c, bool knockedDown)
     {
         Animator anim = CharacterToGameObj[c].GetComponent<Animator>();
-        anim.SetBool("KnockedDown",c.isKnockedDown);
+        anim.SetBool("KnockedDown",knockedDown);
     }
 
     public void CreateGrenade(Grenade g)
