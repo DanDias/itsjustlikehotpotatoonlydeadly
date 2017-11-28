@@ -136,7 +136,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 47625147}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 335, z: 0}
+  m_LocalPosition: {x: 0, y: 400, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 347495006}
@@ -335,7 +335,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 218913754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -319, y: 0, z: 0}
+  m_LocalPosition: {x: -434.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1339639079}
@@ -647,7 +647,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 591934500}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 329, y: 185, z: 0}
+  m_LocalPosition: {x: 444.5, y: 250, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 218913755}
@@ -899,7 +899,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1339639078}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 95, y: 165, z: 0}
+  m_LocalPosition: {x: 95, y: 230, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 218913755}
@@ -1049,7 +1049,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1671272280}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 95, y: 150, z: 0}
+  m_LocalPosition: {x: 95, y: 215, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 218913755}
@@ -1183,6 +1183,7 @@ GameObject:
   - component: {fileID: 2119996944}
   - component: {fileID: 2119996947}
   - component: {fileID: 2119996949}
+  - component: {fileID: 2119996950}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1302,3 +1303,17 @@ MonoBehaviour:
   RoundPanel: {fileID: 47625148}
   RoundText: {fileID: 347495007}
   RoundNumText: {fileID: 1504959556}
+--- !u!114 &2119996950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2119996941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a356171f0a120746a7cdbe1b010750d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 516224c2082e9a04797102c7dd6dd774, type: 3}
+  - {fileID: 8300000, guid: 64dd5801252a02243ae932ecedb85905, type: 3}
