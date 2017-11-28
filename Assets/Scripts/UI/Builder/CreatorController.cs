@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.IO;
+using System.Linq;
 
 public class CreatorController : MonoBehaviour
 {
@@ -56,10 +57,8 @@ public class CreatorController : MonoBehaviour
     void InitSkills()
     {
         // TODO: I should set this up so it reads from a list or something
-        List<Skill> skills = new List<Skill>();
-        skills.Add(new Skills.Throw());
-        skills.Add(new Skills.Knockdown());
-        skills.Add(new Skills.Cook());
+        List<Skill> skills = ReflectiveEnumerator.GetEnumerableOfType<Skill>().ToList();
+
         RefreshSkillList(AllSkills, skills, s =>
          {
              InfoContainer.transform.Find("Name").GetComponent<Text>().text = "Name: " + s.Name;

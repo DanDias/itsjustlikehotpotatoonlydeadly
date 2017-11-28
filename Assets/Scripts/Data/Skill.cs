@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-public class Skill : IMenuItem, IXmlSerializable
+public class Skill : IMenuItem, IXmlSerializable, IComparable<Skill>
 {
     public string Name { get; set; }
     public string Description { get; set; }
@@ -97,6 +97,11 @@ public class Skill : IMenuItem, IXmlSerializable
                 emptySkill.ReadXml(reader);
                 return emptySkill;
         }
+    }
+
+    public int CompareTo(Skill other)
+    {
+        return String.Compare(Name + Mode.ToString() + Description, other.Name + other.Mode.ToString() + other.Description);
     }
     #endregion
 }

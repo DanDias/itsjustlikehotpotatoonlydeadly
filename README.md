@@ -12,7 +12,7 @@ ___
 [X] check off when done
 ___
 ## Fourth Milestone: Skills
-* [ ] Change to round based timer ticks for skill variation
+* [X] Change to round based timer ticks for skill variation
 * [X] Implement Skill inheritance model
   * Execute overriding
   * Basic variables: Name, Description, Source, Mode, Cooldown, MaxCooldown, CharacterTargets, GrenadeTargets
