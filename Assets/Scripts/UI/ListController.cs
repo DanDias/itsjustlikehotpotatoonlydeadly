@@ -74,7 +74,7 @@ public class ListController : MonoBehaviour
                 //Debug.Log(skill.Name + " does not meet requirements, disabling.");
                 obj.GetComponent<Button>().enabled = false;
             }
-            obj.GetComponentInChildren<Text>().text = skill.Name;
+			obj.GetComponentInChildren<Text>().text = skill.Name + "   " + skill.Cooldown;
             obj.SetActive(true);
         }
         if (skills.Count < ContentPanel.transform.childCount)
