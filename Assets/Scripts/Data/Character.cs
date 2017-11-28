@@ -117,6 +117,7 @@ public class Character : IXmlSerializable
     public void SetActiveSkill(Skill skill)
     {
         ActiveSkill = skill;
+		Debug.LogFormat("ActiveSkill : {0}", ActiveSkill);
         ActiveSkill.Source = this;
     }
 
@@ -124,6 +125,7 @@ public class Character : IXmlSerializable
     public void SetTarget(Character target)
 	{
 		myTarget = target;
+		Debug.LogFormat("Target is {0}", myTarget.Name);
         if (ActiveSkill != null)
         { 
             // TODO: This is terrible. Should probably make this syntax better
@@ -134,6 +136,13 @@ public class Character : IXmlSerializable
         //       Might expect this to be the target character... 
         //       thought about args with Character, Character, but eh...
         OnTargetSelected.Invoke(this); 
+	}
+
+	public void UseAI()
+	{
+		Debug.LogFormat("Using AI");
+		SetActiveSkill(Skills[0]);
+		SetTarget(World.Instance.GetAITarget());
 	}
 
     public void SetKnockdown(bool status)

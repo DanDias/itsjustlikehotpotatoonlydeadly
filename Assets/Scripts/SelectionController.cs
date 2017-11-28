@@ -18,11 +18,24 @@ public class SelectionController : Singleton<SelectionController>
     public void SelectNewCharacter(Character ch)
     {
         // Ready mode
-        CurrentMode = SelectMode.Skill;
-        // Set the pointer to the CurrentCharacter
-        pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
-        ch.OnTargetSelected.AddListener(SelectNewEnemy);
+		// Set the pointer to the CurrentCharacter
+		pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
+		if(ch.Team != 2)
+		{
+			CurrentMode = SelectMode.Skill;
+			ch.OnTargetSelected.AddListener(SelectNewEnemy);
+		} else
+		{
+			StartCoroutine(AITurn(ch));
+		}
     }
+
+	public IEnumerator AITurn(Character ch)
+	{
+		ch.OnTargetSelected.AddListener(SelectNewEnemy);
+		yield return new WaitForSeconds(1);
+		ch.UseAI();
+	}
 
     public void ChangeMode(SelectMode mode)
     {
