@@ -4,3 +4,6 @@ castle - https://opengameart.org/content/western-european-castle-isometric-25d
 sign (signpost) - https://opengameart.org/content/lpc-sign-post
 red_boxCross - https://kenney.nl/assets/ui-pack
 immortal font - https://www.1001freefonts.com/immortal.font
+potatoes.png - https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
+campfire - https://opengameart.org/content/camp-fire-animation-for-rpgs-finished
+wizard tower - https://opengameart.org/content/oil-painting-landscapes
