@@ -3,3 +3,4 @@ land - https://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-
 castle - https://opengameart.org/content/western-european-castle-isometric-25d
 sign (signpost) - https://opengameart.org/content/lpc-sign-post
 red_boxCross - https://kenney.nl/assets/ui-pack
+immortal font - https://www.1001freefonts.com/immortal.font
