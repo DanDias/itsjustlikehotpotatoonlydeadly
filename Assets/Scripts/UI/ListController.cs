@@ -59,7 +59,7 @@ public class ListController : MonoBehaviour
             skill.Source = ch;
             if (skill.MeetRequirements())
             {
-                obj.GetComponent<Button>().enabled = true;
+                obj.GetComponent<Button>().interactable = true;
                 obj.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (SelectionController.Instance.CurrentMode == SelectMode.Skill)
@@ -76,7 +76,7 @@ public class ListController : MonoBehaviour
             else
             {
                 //Debug.Log(skill.Name + " does not meet requirements, disabling.");
-                obj.GetComponent<Button>().enabled = false;
+                obj.GetComponent<Button>().interactable = false;
             }
 			obj.GetComponentInChildren<Text>().text = skill.Name + "   " + skill.Cooldown;
             obj.SetActive(true);
