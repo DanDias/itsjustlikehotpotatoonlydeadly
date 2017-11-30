@@ -7,13 +7,14 @@ public class Main : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        NameGenerator.Instance.Initialize(Resources.Load<TextAsset>("names").text);
         // TEST
-        World.Instance.AddCharacter(new Character("Good Guy 1", 1));
-        World.Instance.AddCharacter(new Character("Good Guy 2", 1));
-        World.Instance.AddCharacter(new Character("Good Guy 3", 1));
-        World.Instance.AddCharacter(new Character("Bad Guy 1", 2));
-        World.Instance.AddCharacter(new Character("Bad Guy 2", 2));
-        World.Instance.AddCharacter(new Character("Bad Guy 3", 2));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
+        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
         TurnManager.Instance.StartBattle();
     }
 	

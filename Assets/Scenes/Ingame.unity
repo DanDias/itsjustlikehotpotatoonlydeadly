@@ -1412,11 +1412,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c444a89454f0b4689c770625be7854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefabs:
+  malePrefabs:
   - {fileID: 1496985894909054, guid: 12b329ca5836e4d29b555134d4a89dec, type: 2}
   - {fileID: 1642729845873938, guid: e58e07db0b33c4cc69e0b7336a1deceb, type: 2}
-  - {fileID: 1855655412793524, guid: 880247326a6fe45f5a1560d81c9ab3ed, type: 2}
   - {fileID: 1498312625489958, guid: 77f5949874d5b4e46a4d582f55080f5b, type: 2}
+  femalePrefabs:
+  - {fileID: 1855655412793524, guid: 880247326a6fe45f5a1560d81c9ab3ed, type: 2}
   grenadePrefab: {fileID: 1319299319644932, guid: 92b7a8c6f0d64d3489255c63d268be8c,
     type: 2}
   explosionSprite: {fileID: 21300000, guid: 7a3a08b04d5cb724d8b6be7930888d5a, type: 3}

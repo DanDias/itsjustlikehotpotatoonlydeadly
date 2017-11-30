@@ -17,8 +17,8 @@ public class CharacterInfoWindowController : MonoBehaviour
 	public void ChangeCharactInfoWindow(Character ch)
 	{
 		charName.text = ch.Name;
-		charImage.GetComponent<Image>().sprite = GetSprite("Assets/Sprites/" + ch.staticSprite + "/" + ch.staticSprite + ".png", ch.staticSprite + "_78");
-		//charImage.GetComponent<Image>().sprite = GetSprite("Assets/Sprites/guy2/guy2.png", "guy2_78");
+        // Still frame
+		charImage.GetComponent<Image>().sprite = GetSprite("Assets/Sprites/" + ch.Sprite + "/" + ch.Sprite + ".png", ch.Sprite + "_78");
 	}
 
 	public Sprite GetSprite(string path, string name)

@@ -8,13 +8,32 @@ using System.Xml.Serialization;
 public class Character : IXmlSerializable
 {
     // Properties
-    public string Name { get; set; }
+    public string Name
+    {
+        get { return persona["name"]; }
+        set
+        {
+            persona["name"] = value;
+        }
+    }
+
+    public string Sprite
+    {
+        get { return persona["sprite"]; }
+        set
+        {
+            persona["sprite"] = value;
+            //OnChange.Invoke(this);
+        }
+    }
+
     public int Team { get; set; }
     public Vector3 Position { get; protected set; }
     public List<Skill> Skills { get; protected set; }
     public Skill ActiveSkill { get; protected set; }
     public List<Grenade> Grenades { get { return myGrenades; } }
     public Character Target { get { return myTarget; } }
+    public Persona Persona { get { return persona; } }
 
     public static Vector3 armOffset = new Vector3(0.35f, -0.45f, 0);
 
@@ -24,14 +43,13 @@ public class Character : IXmlSerializable
     public ThrowEvent OnThrowStart = new ThrowEvent();
     public CharacterEvent OnActionEnd = new CharacterEvent();
 
+    protected Persona persona;
     protected List<Grenade> myGrenades;
 	protected Character myTarget;
     // TODO: Maybe eventually replace these with a character state
 	public bool isDead { get; protected set; }
     public bool isKnockedDown { get; protected set; }
 	public bool isGettingUp { get; protected set; }
-
-	public string staticSprite;
     
 	int leftOrRight = -1;
 
@@ -40,21 +58,32 @@ public class Character : IXmlSerializable
         Init();
         Name = name;
 		Team = t;
-		if(Team == 2)
-			leftOrRight = 1;
-        // TODO: Load skills from text file or something
-        Skills.Add(new Skills.Throw());
-        Skills.Add(new Skills.Knockdown());
-        Skills.Add(new Skills.Cook());
+        if (Team == 2)
+            leftOrRight = 1;
+    }
+
+    public Character(Persona p, int t)
+    {
+        persona = p;
+        Init();
+        Team = t;
+        if (Team == 2)
+            leftOrRight = 1;
     }
 
     public void Init()
     {
+        if (persona == null)
+            persona = new Persona();
         myGrenades = new List<Grenade>();
         myTarget = null;
         isDead = false;
         isKnockedDown = false;
         Skills = new List<Skill>();
+        // TODO: Load skills from xml or something
+        Skills.Add(new Skills.Throw());
+        Skills.Add(new Skills.Knockdown());
+        Skills.Add(new Skills.Cook());
     }
 
     public void Update(float deltaTime)
@@ -195,7 +224,7 @@ public class Character : IXmlSerializable
     public void WriteXml(XmlWriter writer)
     {
         writer.WriteAttributeString("Name", Name);
-        writer.WriteAttributeString("Sprite", staticSprite);
+        writer.WriteAttributeString("Sprite", Sprite);
         writeSkills(writer);
     }
 
@@ -214,7 +243,7 @@ public class Character : IXmlSerializable
     public void ReadXml(XmlReader reader)
     {
         Name = reader.GetAttribute("Name");
-        staticSprite = reader.GetAttribute("Sprite");
+        Sprite = reader.GetAttribute("Sprite");
         while (reader.Read())
         {
             switch(reader.Name)

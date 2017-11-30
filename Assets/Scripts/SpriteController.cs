@@ -5,7 +5,8 @@ using System.Linq;
 
 public class SpriteController : MonoBehaviour
 {
-    public List<GameObject> characterPrefabs;
+    public List<GameObject> malePrefabs;
+    public List<GameObject> femalePrefabs;
     public GameObject grenadePrefab;
     public Sprite explosionSprite;
 
@@ -85,10 +86,19 @@ public class SpriteController : MonoBehaviour
         }
         // Create Character in scene
         ch.SetPosition(position);
-		int prefabSpot = Random.Range(0,characterPrefabs.Count);
-		GameObject obj = Instantiate(characterPrefabs[prefabSpot], position, Quaternion.identity);
-		ch.staticSprite = obj.name.Replace("(Clone)", "");
+        
+        // Set Sprite
+        GameObject prefab = null;
+        if (ch.Persona["gender"] == "m")
+            prefab = malePrefabs[Random.Range(0, malePrefabs.Count)];
+        else
+        {
+            prefab = femalePrefabs[Random.Range(0, femalePrefabs.Count)];
+        }
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+		ch.Sprite = obj.name.Replace("(Clone)", "");
         obj.GetComponent<CharacterSelection>().Me = ch;
+
         // Set name
         obj.name = ch.Name;
         CharacterToGameObj[ch] = obj;
