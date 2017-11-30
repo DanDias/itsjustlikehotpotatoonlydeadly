@@ -34,6 +34,10 @@ public class ListController : MonoBehaviour
 
     void PopulateSkills(Character ch)
     {
+        // TODO: Decouple AI from controllers eventually
+        // If AI, don't show skills
+        if (ch.Team == 2)
+            return;
         ch.OnThrowStart.AddListener(DisableSkills);
         List<Skill> skills = ch.Skills;
 

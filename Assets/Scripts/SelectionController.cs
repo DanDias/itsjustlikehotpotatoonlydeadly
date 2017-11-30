@@ -30,6 +30,7 @@ public class SelectionController : Singleton<SelectionController>
 		}
     }
 
+    // TODO: Decouple AI from controllers eventually
 	public IEnumerator AITurn(Character ch)
 	{
 		ch.OnTargetSelected.AddListener(SelectNewEnemy);
