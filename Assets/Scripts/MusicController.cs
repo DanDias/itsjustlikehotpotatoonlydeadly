@@ -10,6 +10,8 @@ public class MusicController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		if(PlayerPrefs.GetFloat("MusicVolume") != 0)
+			musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
 		PlayMusic();
 	}
 	
@@ -20,5 +22,11 @@ public class MusicController : MonoBehaviour
 		musicSource.clip = Music[Random.Range(0, Music.Length)];
 		musicSource.Play();
 		Invoke("PlayMusic", musicSource.clip.length);
+	}
+
+	public void ChangeVolume(float newVolume)
+	{
+		PlayerPrefs.SetFloat("MusicVolume", newVolume);
+		musicSource.volume = newVolume;
 	}
 }

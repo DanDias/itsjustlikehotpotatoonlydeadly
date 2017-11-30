@@ -8,3 +8,4 @@ potatoes.png - https://opengameart.org/content/lpc-farming-tilesets-magic-animat
 campfire - https://opengameart.org/content/camp-fire-animation-for-rpgs-finished
 wizard tower - https://opengameart.org/content/oil-painting-landscapes
 art of escapism - http://freemusicarchive.org/search/?sort=artist_name&quicksearch=art+of+escapism
+gear - https://opengameart.org/content/geometrica-icons
