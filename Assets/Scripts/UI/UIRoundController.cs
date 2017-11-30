@@ -8,6 +8,7 @@ public class UIRoundController : MonoBehaviour
     public RectTransform RoundPanel;
     public Text RoundText;
     public Text RoundNumText;
+	public GameObject Continue;
 
     protected GoTweenChain movementTween;
     
@@ -38,6 +39,7 @@ public class UIRoundController : MonoBehaviour
         RoundNumText.text = "Wins!";
 
         RoundPanel.anchoredPosition = new Vector2(0, -50);
-
+		Debug.LogFormat("Game over man... gmae over");
+		Continue.SetActive(true);
     }
 }
