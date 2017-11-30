@@ -4,8 +4,25 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
-public class TurnManager : Singleton<TurnManager>
+public class TurnManager
 {
+    private static TurnManager _instance;
+
+    private static object _lock = new object();
+    public static TurnManager Instance
+    {
+        get
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new TurnManager();
+                }
+                return _instance;
+            }
+        }
+    }
     protected TurnManager() { } // Guarantee it'll be a singleton only
 
     // Events
@@ -110,6 +127,21 @@ public class TurnManager : Singleton<TurnManager>
             OnGameEnd.Invoke(1);
             gameOver = true;
         }
+    }
+
+    public void CleanUp()
+    {
+        gameOver = false;
+
+        if (TurnOrder != null)
+            TurnOrder.Clear();
+
+        OnGameEnd.RemoveAllListeners();
+        OnRoundEnd.RemoveAllListeners();
+        OnRoundStart.RemoveAllListeners();
+        OnSelectModeChange.RemoveAllListeners();
+        OnTurnEnd.RemoveAllListeners();
+        OnTurnStart.RemoveAllListeners();
     }
 
     protected void updateQueue(Character c)

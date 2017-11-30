@@ -7,6 +7,10 @@ public class LoadLevel : MonoBehaviour{
 
 	public void Load(string level)
 	{
-		SceneManager.LoadScene(level);
+        // Clean Up
+        World.Instance.CleanUp();
+        TurnManager.Instance.CleanUp();
+
+        SceneManager.LoadScene(level);
 	}
 }

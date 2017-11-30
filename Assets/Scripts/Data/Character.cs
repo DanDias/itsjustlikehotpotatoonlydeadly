@@ -78,8 +78,8 @@ public class Character : IXmlSerializable
 		{
             if (myGrenades.Count == 0)
             {
-                Grenade g = new Grenade(3);
-                //Grenade g = new Grenade(1); // For debugging grenade explodes
+                //Grenade g = new Grenade(3);
+                Grenade g = new Grenade(1); // For debugging grenade explodes
                 g.SetPosition(Position);
                 World.Instance.AddGrenade(g);
                 myGrenades.Add(g);

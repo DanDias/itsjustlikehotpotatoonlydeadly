@@ -100,8 +100,19 @@ public class World
             return false;
         });
     }
+    
+    public void CleanUp()
+    {
+        characters.Clear();
+        grenades.Clear();
 
-	public Character GetAITarget()
+        OnCharacterAdded.RemoveAllListeners();
+        OnCharacterRemoved.RemoveAllListeners();
+        OnGrenadeAdded.RemoveAllListeners();
+        OnGrenadeRemoved.RemoveAllListeners();
+    }
+
+    public Character GetAITarget()
 	{
 		return Teams[1][Random.Range(0, Teams[1].Count)];
 	}
