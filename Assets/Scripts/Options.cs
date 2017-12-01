@@ -5,35 +5,20 @@ using UnityEngine.UI;
 
 public class Options : MonoBehaviour 
 {
-	public RectTransform OptionsPanel;
-	//public Text RoundText;
-	//public Text RoundNumText;
-
-	protected GoTweenChain movementTween;
+	public GameObject OptionsPanel;
 
 	// Use this for initialization
 	void Start () {
-		// Movement fun
-		movementTween = new GoTweenChain();
-		movementTween.append(new GoTween(OptionsPanel,0.5f,new GoTweenConfig().anchoredPosition(new Vector2(0,-50))));
-		movementTween.appendDelay(1);
-		movementTween.append(new GoTween(OptionsPanel, 0.5f, new GoTweenConfig().anchoredPosition(new Vector2(0, 150))));
+		
 	}
 
 	public void Close()
 	{
-		//RoundNumText.text = round.ToString();
-		OptionsPanel.anchoredPosition = OptionsPanel.anchoredPosition + new Vector2(300, 0);
-		//movementTween.restart();
+		OptionsPanel.SetActive(false);
 	}
 
 	public void Open()
 	{
-		// TODO: This is dumb reuse
-		//RoundText.text = "Team " + team.ToString();
-		//RoundNumText.text = "Wins!";
-
-		OptionsPanel.anchoredPosition = OptionsPanel.anchoredPosition + new Vector2(-300, 0);
-		//Continue.SetActive(true);
+		OptionsPanel.SetActive(true);
 	}
 }

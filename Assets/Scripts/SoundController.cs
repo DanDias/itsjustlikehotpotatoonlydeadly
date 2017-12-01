@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundController : MonoBehaviour
 {
     public AudioClip[] Clips;
+	public Slider volumeControl;
     protected Dictionary<Grenade, AudioSource> sources = new Dictionary<Grenade, AudioSource>();
-	float soundVolume;
+	float soundVolume = 0.5f;
 
 	// Use this for initialization
 	void Start ()
     {
-		if(PlayerPrefs.GetFloat("SoundVolume") != 0)
+		if(PlayerPrefs.GetFloat("SoundVolume") == -1)
+			soundVolume = 0;
+		else
 			soundVolume = PlayerPrefs.GetFloat("SoundVolume");
+
+		volumeControl.value = soundVolume;
         World.Instance.OnGrenadeAdded.AddListener(RegisterGrenade);
         World.Instance.OnGrenadeRemoved.AddListener(DeregisterGrenade);
     }
@@ -49,11 +55,14 @@ public class SoundController : MonoBehaviour
 	public void ChangeVolume(float newVolume)
 	{
 		soundVolume = newVolume;
-		PlayerPrefs.SetFloat("SoundVolume", newVolume);
 		var keys = sources.Keys;
 		foreach(Grenade g in keys)
 		{
 			sources[g].volume = newVolume;
 		}
+		if(newVolume == 0)
+			newVolume = -1;
+		
+		PlayerPrefs.SetFloat("SoundVolume", newVolume);
 	}
 }

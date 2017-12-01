@@ -1,17 +1,25 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class MusicController : MonoBehaviour 
 {
 	public AudioClip[] Music;
-	public AudioSource musicSource; 
+	public AudioSource musicSource;
+	public Slider volumeControl;
+	float musicVolume = 0.5f;
 
 	// Use this for initialization
 	void Start () 
 	{
-		if(PlayerPrefs.GetFloat("MusicVolume") != 0)
-			musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
+		if(PlayerPrefs.GetFloat("MusicVolume") == -1)
+			musicVolume = 0;
+		else
+			musicVolume = PlayerPrefs.GetFloat("MusicVolume");
+		
+		musicSource.volume = musicVolume;
+		volumeControl.value = musicSource.volume;
 		PlayMusic();
 	}
 	
@@ -26,7 +34,10 @@ public class MusicController : MonoBehaviour
 
 	public void ChangeVolume(float newVolume)
 	{
-		PlayerPrefs.SetFloat("MusicVolume", newVolume);
 		musicSource.volume = newVolume;
+		if(newVolume == 0)
+			newVolume = -1;
+		
+		PlayerPrefs.SetFloat("MusicVolume", newVolume);
 	}
 }

@@ -9,3 +9,6 @@ campfire - https://opengameart.org/content/camp-fire-animation-for-rpgs-finished
 wizard tower - https://opengameart.org/content/oil-painting-landscapes
 art of escapism - http://freemusicarchive.org/search/?sort=artist_name&quicksearch=art+of+escapism
 gear - https://opengameart.org/content/geometrica-icons
+blackXIcon - https://opengameart.org/content/geometrica-icons
+soundIcon - https://www.flaticon.com/free-icon/speaker_54913
+musicIcon - https://www.flaticon.com/free-icon/music-note_26453
