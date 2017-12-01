@@ -13,4 +13,9 @@ public class LoadLevel : MonoBehaviour{
 
         SceneManager.LoadScene(level);
 	}
+
+	public void Quit()
+	{
+		Application.Quit();
+	}
 }
