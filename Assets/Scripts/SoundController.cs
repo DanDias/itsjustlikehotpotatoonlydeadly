@@ -17,6 +17,8 @@ public class SoundController : MonoBehaviour
     {
 		if(PlayerPrefs.GetFloat("SoundVolume") == -1)
 			soundVolume = 0;
+		else if(PlayerPrefs.GetFloat("SoundVolume") == 0)
+			soundVolume = 0.5f;
 		else
 			soundVolume = PlayerPrefs.GetFloat("SoundVolume");
 

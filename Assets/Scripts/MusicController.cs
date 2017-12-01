@@ -15,6 +15,8 @@ public class MusicController : MonoBehaviour
 	{
 		if(PlayerPrefs.GetFloat("MusicVolume") == -1)
 			musicVolume = 0;
+		else if(PlayerPrefs.GetFloat("MusicVolume") == 0)
+			musicVolume = 0.5f;
 		else
 			musicVolume = PlayerPrefs.GetFloat("MusicVolume");
 		
