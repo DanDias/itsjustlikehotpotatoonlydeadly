@@ -6,14 +6,17 @@ using UnityEngine.UI;
 public class ListController : MonoBehaviour
 {
     public GameObject ContentPanel;
-
     public GameObject ListItemPrefab;
+	public GameObject TooltipPanel;
+	ShowHideObject ShowHide;
+
 
 	// Use this for initialization
 	void Awake()
     {
         TurnManager.Instance.OnTurnStart.AddListener(PopulateSkills);
         TurnManager.Instance.OnGameEnd.AddListener(gameOver);
+		ShowHide = (ShowHideObject)TooltipPanel.GetComponent(typeof(ShowHideObject)); 
     }
 	
 	// Update is called once per frame
@@ -79,6 +82,9 @@ public class ListController : MonoBehaviour
                 obj.GetComponent<Button>().interactable = false;
             }
 			obj.GetComponentInChildren<Text>().text = skill.Name + "   " + skill.Cooldown;
+			// hook up the tooltip button
+			obj.GetComponent<Button>().transform.GetChild(1).gameObject.GetComponent<Button>().onClick.AddListener( () => {ShowHide.ShowHide(skill.Description);});
+
             obj.SetActive(true);
         }
         if (skills.Count < ContentPanel.transform.childCount)
