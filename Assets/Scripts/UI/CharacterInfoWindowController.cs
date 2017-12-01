@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class CharacterInfoWindowController : MonoBehaviour
 {
 	public Text charName;
 	public GameObject charImage;
+    public Sprite[] sprites;
 
 	public void Awake()
 	{
@@ -23,14 +23,12 @@ public class CharacterInfoWindowController : MonoBehaviour
 
 	public Sprite GetSprite(string path, string name)
 	{
-		Object[] sprites = AssetDatabase.LoadAllAssetsAtPath(path);
-
 		if(sprites != null)
 		{
 			for(int i = 0; i < sprites.Length; i++)
 			{
 				if(sprites[i].name == name)
-					return (Sprite)sprites[i];
+					return sprites[i];
 			}
 		}
 		return null;

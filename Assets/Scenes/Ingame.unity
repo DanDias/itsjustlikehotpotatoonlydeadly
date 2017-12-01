@@ -1818,6 +1818,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: {fileID: 1339639080}
   charImage: {fileID: 1671272280}
+  sprites:
+  - {fileID: 21300156, guid: a1807f7eac1df46f190491edafc9ffa6, type: 3}
+  - {fileID: 21300156, guid: 9e172d0ce4bf445649b6bad72a4fe782, type: 3}
+  - {fileID: 21300156, guid: 96d5d2a8ddae2489b9da26eb78f67ab9, type: 3}
+  - {fileID: 21300156, guid: 7b3d16f1d4a03448aa78742a6e090cb4, type: 3}
 --- !u!114 &2119996947
 MonoBehaviour:
   m_ObjectHideFlags: 0
