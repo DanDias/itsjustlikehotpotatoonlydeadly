@@ -83,7 +83,8 @@ public class ListController : MonoBehaviour
             }
 			obj.GetComponentInChildren<Text>().text = skill.Name + "   " + skill.Cooldown;
 			// hook up the tooltip button
-			obj.GetComponent<Button>().transform.GetChild(1).gameObject.GetComponent<Button>().onClick.AddListener( () => {ShowHide.ShowHide(skill.Description);});
+			Button tooltip = obj.GetComponent<Button>().transform.GetChild(1).gameObject.GetComponent<Button>();
+			tooltip.onClick.AddListener( () => {ShowHide.ShowHide(skill.Description, tooltip.transform.position);});
 
             obj.SetActive(true);
         }
