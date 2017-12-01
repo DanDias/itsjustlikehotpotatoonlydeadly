@@ -1869,8 +1869,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Clips:
-  - {fileID: 8300000, guid: 516224c2082e9a04797102c7dd6dd774, type: 3}
-  - {fileID: 8300000, guid: 64dd5801252a02243ae932ecedb85905, type: 3}
+  - {fileID: 8300000, guid: d2b73386f22a94bd380bafaf806ab6ba, type: 3}
+  - {fileID: 8300000, guid: f23fcd68fc4504d8e8e1bee5e550abe3, type: 3}
+  - {fileID: 8300000, guid: 18f70d43e7172485c9e014e82bac1a73, type: 3}
+  - {fileID: 8300000, guid: 833f7eefab19445db9567d181163448d, type: 3}
+  - {fileID: 8300000, guid: 065d2040eb3a9498f86e6057555eb7d2, type: 3}
+  - {fileID: 8300000, guid: b95c1a421798a4276a0831bde9eee3fd, type: 3}
+  - {fileID: 8300000, guid: f10146c1c4aba4976b37c5e26fea08ad, type: 3}
+  - {fileID: 8300000, guid: 5f426690cbcf94d17967324b3b4439fa, type: 3}
+  - {fileID: 8300000, guid: 9195412fa986c454190b255e2baf68b2, type: 3}
+  - {fileID: 8300000, guid: 6082a05df91724feb949b59b88074245, type: 3}
+  - {fileID: 8300000, guid: d2b8d58bbb4a44ef887fd76a4233d9a2, type: 3}
+  - {fileID: 8300000, guid: 017a86a9a0ad749c7b87db0932e744dc, type: 3}
+  - {fileID: 8300000, guid: f76695a532b01482c9225710995f2ae7, type: 3}
+  Explosion: {fileID: 8300000, guid: 516224c2082e9a04797102c7dd6dd774, type: 3}
   volumeControl: {fileID: 884859976}
 --- !u!114 &2119996951
 MonoBehaviour:

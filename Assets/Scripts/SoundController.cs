@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class SoundController : MonoBehaviour
 {
     public AudioClip[] Clips;
+	public AudioClip Explosion;
 	public Slider volumeControl;
     protected Dictionary<Grenade, AudioSource> sources = new Dictionary<Grenade, AudioSource>();
 	float soundVolume = 0.5f;
@@ -42,13 +43,15 @@ public class SoundController : MonoBehaviour
 
     void GrenadeThrow(ThrowData data)
     {
-        sources[data.Grenade].clip = Clips.FirstOrDefault(c => c.name.Contains("ThrowWhistle"));
+        //sources[data.Grenade].clip = Clips.FirstOrDefault(c => c.name.Contains("ThrowWhistle"));
+		sources[data.Grenade].clip = Clips[Random.Range(0, Clips.Length)];
         sources[data.Grenade].Play();
     }
 
     void GrenadeExploded(Grenade g)
     {
-        sources[g].clip = Clips.FirstOrDefault(c => c.name.Contains("ExplosionFall"));
+        //sources[g].clip = Clips.FirstOrDefault(c => c.name.Contains("ExplosionFall"));
+		sources[g].clip = Explosion;
         sources[g].Play();
     }
 
