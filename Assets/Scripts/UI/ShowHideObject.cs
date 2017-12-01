@@ -24,4 +24,9 @@ public class ShowHideObject : MonoBehaviour {
 	{
 		ShowHide(msg, obj.transform.position);
 	}
+
+	public void Hide()
+	{
+		obj.SetActive(false);
+	}
 }
