@@ -18,10 +18,10 @@ public class CharacterInfoWindowController : MonoBehaviour
 	{
 		charName.text = ch.Name;
         // Still frame
-		charImage.GetComponent<Image>().sprite = GetSprite("Assets/Sprites/" + ch.Sprite + "/" + ch.Sprite + ".png", ch.Sprite + "_78");
+		charImage.GetComponent<Image>().sprite = GetSprite(ch.Sprite + "_78");
 	}
 
-	public Sprite GetSprite(string path, string name)
+	public Sprite GetSprite(string name)
 	{
 		if(sprites != null)
 		{
