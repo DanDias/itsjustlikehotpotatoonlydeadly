@@ -25,8 +25,9 @@ public class Grenade
 	{
 		CurrentTick = mxT;
 		shakeCount = Random.Range(1, 3);
-		//Debug.LogFormat("shakeCount {0}", shakeCount);
-	}
+        //Debug.LogFormat("shakeCount {0}", shakeCount);
+        World.Instance.AddGrenade(this);
+    }
 
     public void Update(float deltaTime)
     {

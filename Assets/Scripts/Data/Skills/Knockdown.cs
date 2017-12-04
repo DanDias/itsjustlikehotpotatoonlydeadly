@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Skills
 {
-    public class Knockdown : Skill
+    public class Knockdown : Throw
     {
         public Knockdown() : base()
         {
@@ -21,7 +21,6 @@ namespace Skills
                 c.SetKnockdown(true);
 				c.SetGettingUp(false);
             }
-            Source.ThrowGrenade();
             base.Execute();
         }
     }

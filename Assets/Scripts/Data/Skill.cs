@@ -78,6 +78,7 @@ public class Skill : IMenuItem, IXmlSerializable, IComparable<Skill>
     public static Skill Create(XmlReader reader)
     {
         String type = reader.GetAttribute("Type");
+        
         switch(type)
         {
             case "Skills.Throw":

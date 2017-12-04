@@ -9,12 +9,12 @@ public class Main : MonoBehaviour {
     {
         NameGenerator.Instance.Initialize(Resources.Load<TextAsset>("names").text);
         // TEST
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 1));
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
-        World.Instance.AddCharacter(new Character(NameGenerator.Instance.GetPersona(), 2));
+        new Character(NameGenerator.Instance.GetPersona(), 1);
+        new Character(NameGenerator.Instance.GetPersona(), 1);
+        new Character(NameGenerator.Instance.GetPersona(), 1);
+        new Character(NameGenerator.Instance.GetPersona(), 2);
+        new Character(NameGenerator.Instance.GetPersona(), 2);
+        new Character(NameGenerator.Instance.GetPersona(), 2);
         TurnManager.Instance.StartBattle();
     }
 	

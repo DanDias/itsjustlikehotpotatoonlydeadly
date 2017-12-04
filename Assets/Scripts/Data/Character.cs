@@ -60,6 +60,7 @@ public class Character : IXmlSerializable
 		Team = t;
         if (Team == 2)
             leftOrRight = 1;
+        World.Instance.AddCharacter(this);
     }
 
     public Character(Persona p, int t)
@@ -69,6 +70,7 @@ public class Character : IXmlSerializable
         Team = t;
         if (Team == 2)
             leftOrRight = 1;
+        World.Instance.AddCharacter(this);
     }
 
     public void Init()
@@ -100,26 +102,11 @@ public class Character : IXmlSerializable
 
 	public void ThrowGrenade()
 	{
-		//Debug.LogFormat ("Throwing grenade");
-		if (myTarget == null)
-			System.Console.WriteLine ("Select a target");
-		else 
-		{
-            if (myGrenades.Count == 0)
-            {
-                Grenade g = new Grenade(3);
-                //Grenade g = new Grenade(1); // For debugging grenade explodes
-                g.SetPosition(Position);
-                World.Instance.AddGrenade(g);
-                myGrenades.Add(g);
-                g.OnExploded.AddListener(grenadeExploded);
-            }
-            ThrowData data = new ThrowData(this, myTarget, ActiveSkill, myGrenades[0]);
-            myGrenades[0].Throw(data);
-            OnThrowStart.Invoke(data);
-            FinishedThrowingGrenade();
-        }
-	}
+        ThrowData data = new ThrowData(this, Target, ActiveSkill, myGrenades[0]);
+        myGrenades[0].Throw(data);
+        OnThrowStart.Invoke(data);
+        FinishedThrowingGrenade();
+    }
 
     public void FinishedThrowingGrenade()
     {
@@ -191,6 +178,12 @@ public class Character : IXmlSerializable
     {
         isDead = true;
         OnChange.Invoke(this);
+    }
+
+    public void AddGrenade(Grenade g)
+    {
+        myGrenades.Add(g);
+        g.OnExploded.AddListener(grenadeExploded);
     }
 
     public void ExecuteSkill()

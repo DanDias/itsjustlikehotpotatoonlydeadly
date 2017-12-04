@@ -56,7 +56,6 @@ public class CreatorController : MonoBehaviour
 
     void InitSkills()
     {
-        // TODO: I should set this up so it reads from a list or something
         List<Skill> skills = ReflectiveEnumerator.GetEnumerableOfType<Skill>().ToList();
 
         RefreshSkillList(AllSkills, skills, s =>

@@ -15,7 +15,20 @@ namespace Skills
 
         public override void Execute()
         {
-            Source.ThrowGrenade();
+            //Debug.LogFormat ("Throwing grenade");
+            if (Source.Target == null)
+                System.Console.WriteLine("Select a target");
+            else
+            {
+                if (Source.Grenades.Count == 0)
+                {
+                    Grenade g = new Grenade(3);
+                    //Grenade g = new Grenade(1); // For debugging grenade explodes
+                    g.SetPosition(Source.Position);
+                    Source.AddGrenade(g);
+                }
+                Source.ThrowGrenade();
+            }
             base.Execute();
         }
     }
