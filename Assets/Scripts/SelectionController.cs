@@ -6,6 +6,7 @@ public class SelectionController : Singleton<SelectionController>
 {
     public GameObject pointerObject;
 	public GameObject enemySelectObject;
+    public SelectModeEvent OnSelectModeChange = new SelectModeEvent();
 
     public SelectMode CurrentMode { get; protected set; }
 
@@ -18,11 +19,11 @@ public class SelectionController : Singleton<SelectionController>
     public void SelectNewCharacter(Character ch)
     {
         // Ready mode
-		// Set the pointer to the CurrentCharacter
-		pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
+        // Set the pointer to the CurrentCharacter
+        ChangeMode(SelectMode.Skill);
+        pointerObject.transform.position = ch.Position + new Vector3(0, 1, 0);
 		if(ch.Team != 2)
 		{
-			CurrentMode = SelectMode.Skill;
 			ch.OnTargetSelected.AddListener(SelectNewEnemy);
 		} else
 		{
@@ -43,7 +44,7 @@ public class SelectionController : Singleton<SelectionController>
         //Debug.Log("Changing to mode: " + mode);
         CurrentMode = mode;
         // Tell everyone the selection has changed
-        //OnSelectModeChange.Invoke(mode);
+        OnSelectModeChange.Invoke(mode);
     }
 
     public void SelectNewEnemy(Character ch)
@@ -61,7 +62,6 @@ public class SelectionController : Singleton<SelectionController>
             GoTween gt = Go.to(sr, 3f, new GoTweenConfig().colorProp("color", new Color(1, 1, 1, 0)));
             gt.easeType = GoEaseType.CubicOut;
             TurnManager.Instance.CurrentCharacter.ExecuteSkill();
-            
         }
 	}
 
